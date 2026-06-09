@@ -6,7 +6,7 @@
 <meta name="description" content="Kompass HUB — A plataforma All-in-One para escritórios de alta performance. CRM, Jurídico, Financeiro e RH unidos. WhatsApp nativo. Tudo resolvido com um clique.">
 <title>Kompass HUB — A plataforma All-in-One para a advocacia de elite</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Sora:wght@500;600;700&display=swap');
 
 /* ============================================================
    DESIGN TOKENS
@@ -129,18 +129,40 @@ body::after{
   border-bottom:1px solid var(--border-gold);
 }
 .nav-logo{display:flex;align-items:center;gap:11px;z-index:1002}
-.logo-mark{width:30px;height:30px;flex-shrink:0}
-.logo-tri-left{opacity:0;transform:translateX(-8px);animation:triIn .6s var(--ease) .1s forwards}
-.logo-tri-right{opacity:0;transform:translateX(8px);animation:triIn .6s var(--ease) .25s forwards}
-@keyframes triIn{to{opacity:1;transform:translateX(0)}}
-.nav-logo:hover .logo-mark{animation:triPulse .6s var(--ease)}
-@keyframes triPulse{50%{transform:scale(1.06)}}
-.logo-mark{transition:transform .3s var(--ease)}
-.wordmark{font-size:21px;letter-spacing:.01em;white-space:nowrap}
-.wordmark .k{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--white-pure)}
-.wordmark .h{font-family:'DM Sans',sans-serif;font-weight:300;color:var(--gold-primary);margin-left:5px}
+.logo-mark{
+  width:32px;height:32px;flex-shrink:0;
+  opacity:0;animation:logoIn .8s var(--ease) .15s forwards;
+  transition:transform .35s var(--ease);
+}
+@keyframes logoIn{from{opacity:0;transform:scale(.55) rotate(-18deg)}to{opacity:1;transform:none}}
+.nav-logo:hover .logo-mark{transform:rotate(12deg) scale(1.06)}
+
+/* WORDMARK — geometric sans, 2-tone (white "kompass" + gold "Hub") */
+.wordmark{
+  font-family:'Sora',sans-serif;font-weight:600;
+  font-size:20px;letter-spacing:-.005em;line-height:1;
+  white-space:nowrap;display:inline-flex;align-items:baseline;
+}
+.wordmark .wm-k{color:var(--white-pure)}
+.wordmark .wm-h{color:var(--gold-primary)}
 .wordmark span span{opacity:0;animation:charIn .5s var(--ease) forwards}
 @keyframes charIn{from{opacity:0}to{opacity:1}}
+
+/* FULL BRAND BLOCK — mark + wordmark + tagline (footer only) */
+.brand-block{display:flex;flex-direction:column;gap:14px}
+.brand-row{display:flex;align-items:center;gap:12px}
+.brand-row .logo-mark{width:38px;height:38px;animation:none;opacity:1}
+.brand-row .wordmark{font-size:24px}
+.brand-tag{
+  font-family:'Sora',sans-serif;font-weight:500;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--gold-primary);padding-left:50px;
+  position:relative;
+}
+.brand-tag::before{
+  content:"";position:absolute;left:0;top:50%;
+  width:38px;height:1px;background:var(--gold-primary);opacity:.4;
+}
 
 .nav-links{display:none;align-items:center;gap:36px}
 .nav-links a{
@@ -208,8 +230,9 @@ body::after{
 @keyframes morphA{from{transform:translate(0,0) scale(1)}to{transform:translate(-6%,8%) scale(1.15)}}
 @keyframes morphB{from{transform:translate(0,0) scale(1)}to{transform:translate(8%,-6%) scale(1.1)}}
 
-/* ghost triangles watermark */
-.hero-watermark{position:absolute;right:-4%;top:50%;transform:translateY(-50%);z-index:1;opacity:.03;width:600px;pointer-events:none}
+/* ghost mark watermark */
+.hero-watermark{position:absolute;right:-12%;top:50%;transform:translateY(-50%);z-index:1;opacity:.04;width:680px;pointer-events:none}
+.hero-watermark svg{width:100%;height:auto;display:block}
 
 .hero-grid{
   position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;width:100%;
@@ -257,15 +280,29 @@ body::after{
 .hero-visual{opacity:0;animation:fadeIn 1.1s var(--ease) 1.7s forwards;display:flex;justify-content:center}
 .hero-visual svg{width:100%;max-width:460px;height:auto;overflow:visible}
 
-/* diagram shared */
-.diag-circle{fill:none;stroke:var(--gold-primary);stroke-width:1}
-.diag-line{stroke:var(--gold-primary);stroke-width:1;opacity:.55}
-.diag-line-dotted{stroke:var(--gold-primary);stroke-width:1;stroke-dasharray:4 3;opacity:.7;fill:none}
-.diag-card{fill:var(--bg-card);stroke:var(--gold-primary);stroke-width:1}
-.diag-card-soft{fill:var(--bg-secondary);stroke:var(--border-gold);stroke-width:1}
-.diag-label{font-family:'DM Sans',sans-serif;font-size:11px;fill:var(--white-soft);font-weight:400}
-.diag-center-label{font-family:'Cormorant Garamond',serif;font-size:15px;fill:var(--white-pure);font-weight:500;letter-spacing:.04em}
-.diag-dot{fill:var(--gold-light)}
+/* HUB DIAGRAM (hero) — refined */
+.hub-ring-outer{fill:none;stroke:var(--gold-primary);stroke-width:1;opacity:.18;stroke-dasharray:3 5}
+.hub-ring-mid{fill:none;stroke:var(--gold-primary);stroke-width:1;opacity:.35}
+.hub-ring-inner{fill:none;stroke:var(--gold-primary);stroke-width:1.2;opacity:.6}
+.hub-conn{stroke:var(--gold-primary);stroke-width:1;opacity:.55}
+.hub-conn-dotted{stroke:var(--gold-primary);stroke-width:1;stroke-dasharray:3 4;opacity:.7;fill:none}
+.hub-center-disc{fill:var(--bg-primary);stroke:var(--gold-primary);stroke-width:1.2}
+.hub-card-bg{fill:var(--bg-card);stroke:var(--gold-primary);stroke-width:1;opacity:.95}
+.hub-card-side{fill:var(--bg-secondary);stroke:var(--border-gold);stroke-width:1}
+.hub-card-icon{stroke:var(--gold-primary);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.hub-card-title{font-family:'Sora',sans-serif;font-size:10.5px;fill:var(--white-pure);font-weight:600;letter-spacing:.01em}
+.hub-card-sub{font-family:'DM Sans',sans-serif;font-size:8px;fill:var(--text-muted);font-weight:400;letter-spacing:.02em}
+.hub-dot{fill:var(--gold-light);filter:drop-shadow(0 0 4px rgba(184,169,122,.8))}
+
+/* ORBITAL (differential unified) — rotating constellation */
+.orbit-ring-outer-2{fill:none;stroke:var(--gold-primary);stroke-width:1;stroke-dasharray:2 4;opacity:.22}
+.orbit-ring-2{fill:none;stroke:var(--border-gold);stroke-width:1;opacity:.7}
+.orbit-rotor{transform-origin:150px 110px;animation:orbitRotate 60s linear infinite}
+@keyframes orbitRotate{to{transform:rotate(360deg)}}
+.orbit-pill{fill:var(--gold-primary);filter:drop-shadow(0 0 5px rgba(184,169,122,.55))}
+.orbit-pill-ring{fill:none;stroke:var(--gold-primary);stroke-width:.6;opacity:.5}
+.orbit-center{fill:var(--bg-primary);stroke:var(--gold-primary);stroke-width:1}
+.orbit-center-aura{fill:none;stroke:var(--gold-primary);stroke-width:1;opacity:.3}
 
 /* ============================================================
    TRUST BAR
@@ -287,7 +324,8 @@ body::after{
 /* ============================================================
    ECOSYSTEM TABS
    ============================================================ */
-.eco-watermark{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:760px;opacity:.022;pointer-events:none;z-index:0}
+.eco-watermark{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:760px;opacity:.028;pointer-events:none;z-index:0}
+.eco-watermark svg{width:100%;height:auto;display:block}
 .eco-head{text-align:center;margin-bottom:72px}
 .eco-head h2{
   font-family:'Cormorant Garamond',serif;font-weight:300;
@@ -454,7 +492,8 @@ body::after{
   background:radial-gradient(circle,var(--gold-primary)0%,transparent 65%);
   opacity:.14;z-index:0;pointer-events:none;filter:blur(40px);
 }
-.final-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:640px;opacity:.04;z-index:0;pointer-events:none}
+.final-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:640px;opacity:.05;z-index:0;pointer-events:none}
+.final-watermark svg{width:100%;height:auto;display:block}
 .final h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(44px,8vw,72px);color:var(--white-pure);line-height:1.04;margin-top:18px}
 .final .uline{height:2px;width:200px;background:var(--gold-primary);margin:26px auto 0;transform:scaleX(0);transform-origin:center;transition:transform .9s var(--ease) .2s}
 .final .uline.in{transform:scaleX(1)}
@@ -468,8 +507,7 @@ body::after{
    ============================================================ */
 .footer{background:var(--bg-deepest);padding:80px 32px 32px}
 .footer-grid{display:grid;grid-template-columns:1fr;gap:48px;max-width:var(--maxw);margin:0 auto}
-.footer-brand .nav-logo{margin-bottom:18px}
-.footer-tag{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold-primary);margin-bottom:18px}
+.footer-brand .brand-block{margin-bottom:22px}
 .footer-desc{font-size:13px;font-weight:300;color:var(--text-muted);max-width:280px;line-height:1.6;margin-bottom:24px}
 .footer-social{display:flex;gap:16px}
 .footer-social a{width:38px;height:38px;border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;transition:border-color .3s,transform .3s}
@@ -516,14 +554,58 @@ body::after{
 </head>
 <body>
 
+<!-- ============================ BRAND SVG ATLAS ============================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- COMPASS MARK — só os dois triângulos (transparente) -->
+    <symbol id="kompass-mark" viewBox="0 0 64 64">
+      <polygon points="18,12 33,22 22,32" fill="#FFFFFF"/>
+      <polygon points="28,24 48,36 30,50" fill="#B8A97A"/>
+    </symbol>
+    <!-- COMPASS MARK em disco navy — pra usar sobre fundos claros ou destacar em fundos escuros -->
+    <symbol id="kompass-mark-disc" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="31" fill="#0E1120"/>
+      <polygon points="18,12 33,22 22,32" fill="#FFFFFF"/>
+      <polygon points="28,24 48,36 30,50" fill="#B8A97A"/>
+    </symbol>
+    <!-- COMPASS MARK em disco navy com aro dourado -->
+    <symbol id="kompass-mark-disc-ring" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="31" fill="#0E1120" stroke="#B8A97A" stroke-width="1"/>
+      <polygon points="18,12 33,22 22,32" fill="#FFFFFF"/>
+      <polygon points="28,24 48,36 30,50" fill="#B8A97A"/>
+    </symbol>
+    <!-- ICON: barras (CRM) -->
+    <symbol id="ic-crm" viewBox="0 0 20 20">
+      <path d="M2 16 L2 11 M7 16 L7 6 M12 16 L12 9 M17 16 L17 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+    <!-- ICON: balança (Jurídico) -->
+    <symbol id="ic-legal" viewBox="0 0 20 20">
+      <path d="M10 3 L10 17 M5 5 L15 5 M3 11 L5 6 L7 11 M13 11 L15 6 L17 11 M5 17 L15 17" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <!-- ICON: cifrão circle (Financeiro) -->
+    <symbol id="ic-fin" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M12.5 7.5 C12 6.6 11 6 10 6 C8.5 6 7.5 6.8 7.5 8 C7.5 11 12.5 9.5 12.5 12 C12.5 13.2 11.5 14 10 14 C9 14 8 13.4 7.5 12.5 M10 5 L10 6 M10 14 L10 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+    <!-- ICON: cap academy (Academy) -->
+    <symbol id="ic-academy" viewBox="0 0 20 20">
+      <path d="M1.5 7.5 L10 4 L18.5 7.5 L10 11 Z M4.5 9 L4.5 13.5 C4.5 14.5 7 15.5 10 15.5 C13 15.5 15.5 14.5 15.5 13.5 L15.5 9 M18.5 7.5 L18.5 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <!-- ICON: chat WhatsApp -->
+    <symbol id="ic-whats" viewBox="0 0 20 20">
+      <path d="M3 17 L4.2 13.5 A7 7 0 1 1 7 16 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="8" cy="10" r=".9" fill="currentColor"/>
+      <circle cx="10.5" cy="10" r=".9" fill="currentColor"/>
+      <circle cx="13" cy="10" r=".9" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
 <!-- ============================ NAV ============================ -->
 <nav class="nav" id="nav">
-  <a href="#hero" class="nav-logo" aria-label="Kompass Hub">
-    <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <polygon class="logo-tri-left" points="6,20 28,6 20,20" fill="#FFFFFF"/>
-      <polygon class="logo-tri-right" points="6,20 28,34 20,20" fill="#B8A97A"/>
-    </svg>
-    <span class="wordmark"><span class="k" data-split>Kompass</span><span class="h" data-split>Hub</span></span>
+  <a href="#hero" class="nav-logo" aria-label="kompass Hub">
+    <svg class="logo-mark" aria-hidden="true"><use href="#kompass-mark"/></svg>
+    <span class="wordmark"><span class="wm-k" data-split>kompass</span><span class="wm-h" data-split>Hub</span></span>
   </a>
   <div class="nav-links">
     <a href="#ecosystem">Soluções</a>
@@ -548,10 +630,9 @@ body::after{
 <!-- ============================ HERO ============================ -->
 <header class="hero" id="hero">
   <div class="hero-bg"></div>
-  <svg class="hero-watermark" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-    <polygon points="30,100 140,30 100,100" fill="#FFFFFF"/>
-    <polygon points="30,100 140,170 100,100" fill="#B8A97A"/>
-  </svg>
+  <div class="hero-watermark" aria-hidden="true">
+    <svg viewBox="0 0 64 64"><use href="#kompass-mark"/></svg>
+  </div>
   <div class="hero-grid">
     <div class="hero-text">
       <span class="eyebrow hero-eyebrow">Plataforma All-in-One&nbsp;&nbsp;·&nbsp;&nbsp;SaaS B2B&nbsp;&nbsp;·&nbsp;&nbsp;LegalTech</span>
@@ -566,52 +647,93 @@ body::after{
     </div>
 
     <div class="hero-visual">
-      <!-- ARCHITECTURAL HUB DIAGRAM -->
+      <!-- ARCHITECTURAL HUB DIAGRAM v2 — mark real + cards com ícones + 3 rings -->
       <svg viewBox="0 0 440 480" fill="none" aria-label="Diagrama do ecossistema Kompass HUB">
-        <!-- connecting lines (drawn from center to each card) -->
-        <line class="diag-line" x1="220" y1="148" x2="220" y2="78"/>
-        <line class="diag-line" x1="292" y1="240" x2="362" y2="240"/>
-        <line class="diag-line" x1="220" y1="332" x2="220" y2="402"/>
-        <line class="diag-line" x1="148" y1="240" x2="78" y2="240"/>
-        <!-- whatsapp dotted connector to top (CRM) card -->
-        <path class="diag-line-dotted" d="M348 64 Q300 60 268 70"/>
+        <defs>
+          <radialGradient id="hubAura" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#B8A97A" stop-opacity=".22"/>
+            <stop offset="55%" stop-color="#B8A97A" stop-opacity=".06"/>
+            <stop offset="100%" stop-color="#B8A97A" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
 
-        <!-- center circle -->
-        <circle class="diag-circle" cx="220" cy="240" r="72"/>
-        <circle cx="220" cy="240" r="86" fill="none" stroke="#B8A97A" stroke-width="1" opacity=".25"/>
-        <text class="diag-center-label" x="220" y="236" text-anchor="middle">KOMPASS</text>
-        <text class="diag-center-label" x="220" y="254" text-anchor="middle">HUB</text>
+        <!-- aura glow -->
+        <circle cx="220" cy="240" r="190" fill="url(#hubAura)"/>
 
-        <!-- module cards -->
-        <g>
-          <rect class="diag-card" x="150" y="34" width="140" height="44"/>
-          <text class="diag-label" x="220" y="60" text-anchor="middle">CRM &amp; Comercial</text>
-        </g>
-        <g>
-          <rect class="diag-card" x="362" y="218" width="78" height="44"/>
-          <text class="diag-label" x="401" y="244" text-anchor="middle">Jurídico</text>
-        </g>
-        <g>
-          <rect class="diag-card" x="150" y="402" width="140" height="44"/>
-          <text class="diag-label" x="220" y="428" text-anchor="middle">Financeiro &amp; RH</text>
-        </g>
-        <g>
-          <rect class="diag-card" x="0" y="218" width="78" height="44"/>
-          <text class="diag-label" x="39" y="244" text-anchor="middle">Academy</text>
-        </g>
+        <!-- 3 rings (concentric) -->
+        <circle class="hub-ring-outer" cx="220" cy="240" r="180"/>
+        <circle class="hub-ring-mid"   cx="220" cy="240" r="128"/>
+        <circle class="hub-ring-inner" cx="220" cy="240" r="78"/>
 
-        <!-- whatsapp node -->
-        <g>
-          <rect class="diag-card-soft" x="332" y="40" width="40" height="40" rx="8"/>
-          <path d="M345 70 L347 62 A8 8 0 1 1 353 68 Z" fill="none" stroke="#B8A97A" stroke-width="1.4"/>
-          <circle cx="349" cy="60" r="1.2" fill="#B8A97A"/><circle cx="353" cy="60" r="1.2" fill="#B8A97A"/><circle cx="357" cy="60" r="1.2" fill="#B8A97A"/>
+        <!-- connecting lines from rim → cards -->
+        <line class="hub-conn" x1="220" y1="162" x2="220" y2="92"/>
+        <line class="hub-conn" x1="298" y1="240" x2="324" y2="240"/>
+        <line class="hub-conn" x1="220" y1="318" x2="220" y2="388"/>
+        <line class="hub-conn" x1="142" y1="240" x2="116" y2="240"/>
+
+        <!-- whatsapp dotted connector → CRM card -->
+        <path class="hub-conn-dotted" d="M360 84 Q318 90 282 92"/>
+
+        <!-- center: navy disc + real mark -->
+        <circle class="hub-center-disc" cx="220" cy="240" r="60"/>
+        <circle cx="220" cy="240" r="68" fill="none" stroke="#B8A97A" stroke-width="1" opacity=".35"/>
+        <g transform="translate(178, 198)">
+          <use href="#kompass-mark" width="84" height="84"/>
         </g>
 
-        <!-- traveling data dots -->
-        <circle class="diag-dot" r="2.6"><animateMotion dur="12s" repeatCount="indefinite" path="M220,240 L220,78"/></circle>
-        <circle class="diag-dot" r="2.6"><animateMotion dur="12s" begin="3s" repeatCount="indefinite" path="M220,240 L362,240"/></circle>
-        <circle class="diag-dot" r="2.6"><animateMotion dur="12s" begin="6s" repeatCount="indefinite" path="M220,240 L220,402"/></circle>
-        <circle class="diag-dot" r="2.6"><animateMotion dur="12s" begin="9s" repeatCount="indefinite" path="M220,240 L78,240"/></circle>
+        <!-- TOP CARD: CRM & Comercial -->
+        <g>
+          <rect class="hub-card-bg" x="124" y="30" width="192" height="62" rx="2"/>
+          <g class="hub-card-icon" transform="translate(140, 50)">
+            <use href="#ic-crm" width="20" height="20"/>
+          </g>
+          <text class="hub-card-title" x="170" y="56">CRM &amp; Comercial</text>
+          <text class="hub-card-sub"   x="170" y="76">Pipeline · Propostas · WhatsApp</text>
+        </g>
+
+        <!-- RIGHT CARD: Jurídico -->
+        <g>
+          <rect class="hub-card-bg" x="324" y="208" width="116" height="64" rx="2"/>
+          <g class="hub-card-icon" transform="translate(338, 226)">
+            <use href="#ic-legal" width="20" height="20"/>
+          </g>
+          <text class="hub-card-title" x="368" y="234">Jurídico</text>
+          <text class="hub-card-sub"   x="368" y="252">Processos · Prazos</text>
+        </g>
+
+        <!-- BOTTOM CARD: Financeiro & RH -->
+        <g>
+          <rect class="hub-card-bg" x="124" y="388" width="192" height="62" rx="2"/>
+          <g class="hub-card-icon" transform="translate(140, 408)">
+            <use href="#ic-fin" width="20" height="20"/>
+          </g>
+          <text class="hub-card-title" x="170" y="414">Financeiro &amp; RH</text>
+          <text class="hub-card-sub"   x="170" y="434">Caixa · Pagamentos · Equipe</text>
+        </g>
+
+        <!-- LEFT CARD: Academy -->
+        <g>
+          <rect class="hub-card-bg" x="0" y="208" width="116" height="64" rx="2"/>
+          <g class="hub-card-icon" transform="translate(14, 226)">
+            <use href="#ic-academy" width="20" height="20"/>
+          </g>
+          <text class="hub-card-title" x="44" y="234">Academy</text>
+          <text class="hub-card-sub"   x="44" y="252">Formação · Maestria</text>
+        </g>
+
+        <!-- WHATSAPP NODE -->
+        <g>
+          <rect class="hub-card-side" x="336" y="36" width="52" height="52" rx="14"/>
+          <g class="hub-card-icon" transform="translate(348, 48)">
+            <use href="#ic-whats" width="28" height="28"/>
+          </g>
+        </g>
+
+        <!-- traveling data dots (rim → card) -->
+        <circle class="hub-dot" r="3.2"><animateMotion dur="13s" repeatCount="indefinite" path="M220,162 L220,92"/></circle>
+        <circle class="hub-dot" r="3.2"><animateMotion dur="13s" begin="3.2s" repeatCount="indefinite" path="M298,240 L324,240"/></circle>
+        <circle class="hub-dot" r="3.2"><animateMotion dur="13s" begin="6.4s" repeatCount="indefinite" path="M220,318 L220,388"/></circle>
+        <circle class="hub-dot" r="3.2"><animateMotion dur="13s" begin="9.6s" repeatCount="indefinite" path="M142,240 L116,240"/></circle>
       </svg>
     </div>
   </div>
@@ -635,10 +757,9 @@ body::after{
 
 <!-- ============================ ECOSYSTEM TOUR ============================ -->
 <section class="section" id="ecosystem">
-  <svg class="eco-watermark" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-    <polygon points="30,100 140,30 100,100" fill="#FFFFFF"/>
-    <polygon points="30,100 140,170 100,100" fill="#B8A97A"/>
-  </svg>
+  <div class="eco-watermark" aria-hidden="true">
+    <svg viewBox="0 0 64 64"><use href="#kompass-mark"/></svg>
+  </div>
   <div class="container">
     <div class="eco-head reveal">
       <span class="eyebrow">O Ecossistema</span>
@@ -949,17 +1070,29 @@ body::after{
       <div class="compare-side reveal">
         <div class="compare-vis">
           <svg viewBox="0 0 300 220" fill="none" aria-label="Tudo unificado no Kompass HUB">
-            <circle class="orbit-ring" cx="150" cy="110" r="88"/>
-            <circle class="orbit-icon" cx="150" cy="22" r="9"/>
-            <circle class="orbit-icon" cx="212" cy="48" r="9"/>
-            <circle class="orbit-icon" cx="238" cy="110" r="9"/>
-            <circle class="orbit-icon" cx="212" cy="172" r="9"/>
-            <circle class="orbit-icon" cx="150" cy="198" r="9"/>
-            <circle class="orbit-icon" cx="88" cy="172" r="9"/>
-            <circle class="orbit-icon" cx="62" cy="110" r="9"/>
-            <!-- central logo -->
-            <polygon points="120,110 178,72 158,110" fill="#FFFFFF"/>
-            <polygon points="120,110 178,148 158,110" fill="#B8A97A"/>
+            <!-- outer dashed ring -->
+            <circle class="orbit-ring-outer-2" cx="150" cy="110" r="96"/>
+            <!-- rotating constellation: ring + 5 pillars -->
+            <g class="orbit-rotor">
+              <circle class="orbit-ring-2" cx="150" cy="110" r="78"/>
+              <!-- 5 pillar nodes: top, NE, SE, SW, NW (72° apart) -->
+              <circle class="orbit-pill-ring" cx="150" cy="32" r="11"/>
+              <circle class="orbit-pill"      cx="150" cy="32" r="6"/>
+              <circle class="orbit-pill-ring" cx="224" cy="86" r="11"/>
+              <circle class="orbit-pill"      cx="224" cy="86" r="6"/>
+              <circle class="orbit-pill-ring" cx="196" cy="174" r="11"/>
+              <circle class="orbit-pill"      cx="196" cy="174" r="6"/>
+              <circle class="orbit-pill-ring" cx="104" cy="174" r="11"/>
+              <circle class="orbit-pill"      cx="104" cy="174" r="6"/>
+              <circle class="orbit-pill-ring" cx="76"  cy="86"  r="11"/>
+              <circle class="orbit-pill"      cx="76"  cy="86"  r="6"/>
+            </g>
+            <!-- center disc + mark -->
+            <circle class="orbit-center-aura" cx="150" cy="110" r="40"/>
+            <circle class="orbit-center" cx="150" cy="110" r="32"/>
+            <g transform="translate(126, 86)">
+              <use href="#kompass-mark" width="48" height="48"/>
+            </g>
           </svg>
         </div>
         <p class="compare-label good">Com o Kompass HUB:<br>Uma plataforma. Tudo integrado. Escala real.</p>
@@ -1016,10 +1149,9 @@ body::after{
 <!-- ============================ FINAL CTA ============================ -->
 <section class="section final" id="final">
   <div class="final-glow"></div>
-  <svg class="final-watermark" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-    <polygon points="30,100 140,30 100,100" fill="#FFFFFF"/>
-    <polygon points="30,100 140,170 100,100" fill="#B8A97A"/>
-  </svg>
+  <div class="final-watermark" aria-hidden="true">
+    <svg viewBox="0 0 64 64"><use href="#kompass-mark"/></svg>
+  </div>
   <div class="container" style="text-align:center">
     <div class="reveal">
       <span class="eyebrow">Próximo Passo</span>
@@ -1042,14 +1174,13 @@ body::after{
 <footer class="footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="nav-logo">
-        <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <polygon points="6,20 28,6 20,20" fill="#FFFFFF"/>
-          <polygon points="6,20 28,34 20,20" fill="#B8A97A"/>
-        </svg>
-        <span class="wordmark"><span class="k">Kompass</span><span class="h">Hub</span></span>
+      <div class="brand-block">
+        <div class="brand-row">
+          <svg class="logo-mark" aria-hidden="true"><use href="#kompass-mark"/></svg>
+          <span class="wordmark"><span class="wm-k">kompass</span><span class="wm-h">Hub</span></span>
+        </div>
+        <div class="brand-tag">LEGAL · TECH · ACADEMY</div>
       </div>
-      <div class="footer-tag">Legal · Tech · Academy</div>
       <p class="footer-desc">A plataforma All-in-One para escritórios de alta performance.</p>
       <div class="footer-social">
         <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
