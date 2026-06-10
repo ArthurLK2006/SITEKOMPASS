@@ -2095,6 +2095,112 @@ button { font-family: var(--font-ui); cursor: pointer; }
   .btn-gold, .btn-outline { width: 100%; text-align: center; }
 }
 
+/* ============================================================
+   PHONE MOCKUP (hero) + swing da bússola central
+   ============================================================ */
+.hub-mark {
+  animation: hubSwing 5.5s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes hubSwing {
+  0%, 100% { transform: rotate(-5deg); }
+  50%      { transform: rotate(4deg); }
+}
+
+.phone-mockup {
+  --ph-rot: 4deg;
+  position: absolute;
+  right: 3.5%;
+  bottom: 44px;
+  z-index: 2;
+  width: 196px;
+  aspect-ratio: 9 / 17.4;
+  background: #080A12;
+  border: 6px solid #232A40;
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.55), 0 0 70px rgba(184,169,122,.16);
+  pointer-events: none;
+  animation: phoneIn 1s var(--ease-out) 2.15s both;
+}
+@keyframes phoneIn {
+  from { opacity: 0; transform: rotate(var(--ph-rot)) translateY(26px); }
+  to   { opacity: 1; transform: rotate(var(--ph-rot)) translateY(0); }
+}
+.phone-notch {
+  position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+  width: 56px; height: 12px; background: #232A40; border-radius: 7px; z-index: 2;
+}
+.phone-home {
+  position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+  width: 58px; height: 3px; background: rgba(240,237,232,.25); border-radius: 2px; z-index: 2;
+}
+.phone-screen {
+  position: absolute; inset: 0; border-radius: 21px; overflow: hidden;
+  display: flex; flex-direction: column;
+  background: linear-gradient(180deg, #10141F 0%, #0C0F1A 100%);
+}
+.ph-head {
+  display: flex; align-items: center; gap: 6px;
+  padding: 24px 12px 9px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.ph-head img { display: block; }
+.ph-brand {
+  font-family: var(--font-ui); font-size: 10px; font-weight: 500;
+  color: var(--white-pure); letter-spacing: .02em;
+}
+.ph-brand em { font-style: normal; color: var(--gold-primary); }
+.ph-cols { display: flex; flex: 1; min-height: 0; }
+.ph-rail {
+  width: 56px; border-right: 1px solid var(--border-subtle);
+  padding: 7px 0; display: flex; flex-direction: column; gap: 1px; overflow: hidden;
+}
+.ph-rail span {
+  font-family: var(--font-ui); font-size: 6.5px; letter-spacing: .07em;
+  color: var(--text-muted); text-transform: uppercase;
+  padding: 3.5px 7px; display: flex; align-items: center; gap: 4px; white-space: nowrap;
+}
+.ph-rail span::before {
+  content: ""; width: 4px; height: 4px; border-radius: 1.5px;
+  background: currentColor; opacity: .55; flex: none;
+}
+.ph-rail span.on {
+  color: var(--gold-primary); background: rgba(184,169,122,.10);
+  border-left: 2px solid var(--gold-primary); padding-left: 5px;
+}
+.ph-main { flex: 1; padding: 9px 9px; }
+.ph-sec {
+  font-family: var(--font-ui); font-size: 7px; letter-spacing: .24em;
+  color: var(--text-muted); margin: 0 0 7px; text-transform: uppercase;
+}
+.ph-item {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-ui); font-size: 8.5px; color: var(--white-soft);
+  padding: 6px 8px; border-radius: 5px; margin-bottom: 2px;
+}
+.ph-item.on {
+  background: rgba(184,169,122,.14); color: var(--gold-light);
+  border: 1px solid var(--border-gold);
+}
+.ph-badge {
+  font-style: normal; font-weight: 500; font-size: 7px;
+  background: var(--gold-primary); color: #0E1120;
+  width: 12px; height: 12px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+@media (max-width: 1280px) {
+  .phone-mockup { right: 1.5%; width: 178px; }
+}
+@media (max-width: 1080px) {
+  .hero-orbital-wrap { display: none; }
+  .phone-mockup {
+    --ph-rot: 0deg;
+    position: relative; right: auto; bottom: auto;
+    margin: 40px auto 0; width: 208px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -2114,10 +2220,8 @@ button { font-family: var(--font-ui); cursor: pointer; }
      ============================================================ -->
 <section id="gateway" aria-label="Escolha seu caminho">
   <div class="logo gateway-logo">
-    <svg width="32" height="22" viewBox="0 0 32 22" fill="none">
-      <polygon points="0,20 14,2 14,20" fill="#FFFFFF"/>
-      <polygon points="16,20 30,4 30,20" fill="#B8A97A"/>
-    </svg>
+    <img src="assets/brand/mark-crop.png" width="42" height="22" alt="" style="display:block">
+
     <span class="logo-text">
       <span class="logo-kompass">kompass</span><span class="logo-hub">Hub</span>
     </span>
@@ -2165,10 +2269,8 @@ button { font-family: var(--font-ui); cursor: pointer; }
        ============================================================ -->
   <header id="nav">
     <a href="#hero" class="logo" aria-label="Kompass HUB — in&iacute;cio">
-      <svg width="32" height="22" viewBox="0 0 32 22" fill="none">
-        <polygon points="0,20 14,2 14,20" fill="#FFFFFF"/>
-        <polygon points="16,20 30,4 30,20" fill="#B8A97A"/>
-      </svg>
+      <img src="assets/brand/mark-crop.png" width="42" height="22" alt="" style="display:block">
+
       <span class="logo-text">
         <span class="logo-kompass">kompass</span><span class="logo-hub">Hub</span>
       </span>
@@ -2302,8 +2404,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
 
           <!-- Center hub -->
           <circle cx="240" cy="240" r="52" fill="#0E1120" stroke="#B8A97A" stroke-width="2"/>
-          <polygon points="218,254 234,226 234,254" fill="#FFFFFF"/>
-          <polygon points="246,254 262,230 262,254" fill="#B8A97A"/>
+          <image class="hub-mark" href="assets/brand/mark-crop.png" x="203" y="221" width="74" height="38"/>
 
           <!-- Flow dots -->
           <circle r="3" fill="#B8A97A" opacity="0.8">
@@ -2376,6 +2477,32 @@ button { font-family: var(--font-ui); cursor: pointer; }
           <div class="orb-sub">Forma&ccedil;&atilde;o &middot; Maestria</div>
         </div>
       </div>
+    </div>
+
+    <!-- Phone mockup — app real no bolso (desktop: flutuante; mobile: substitui o orbital) -->
+    <div class="phone-mockup" aria-hidden="true">
+      <span class="phone-notch"></span>
+      <div class="phone-screen">
+        <div class="ph-head">
+          <img src="assets/brand/mark-crop.png" width="20" height="10" alt="">
+          <span class="ph-brand">kompass<em>&middot;CRM</em></span>
+        </div>
+        <div class="ph-cols">
+          <nav class="ph-rail">
+            <span>Whats.</span><span>Chat</span><span class="on">CRM</span><span>Tarefas</span><span>Comerc.</span><span>Capta&ccedil;.</span><span>An&aacute;lise</span><span>Equipe</span><span>Operac.</span><span>Financ.</span><span>Conte&uacute;do</span><span>Extras</span>
+          </nav>
+          <div class="ph-main">
+            <p class="ph-sec">CRM</p>
+            <span class="ph-item on">Dashboard</span>
+            <span class="ph-item">Pipeline CRM</span>
+            <span class="ph-item">Pessoas</span>
+            <span class="ph-item">Rascunhos de cada&hellip;</span>
+            <span class="ph-item">Agenda <b class="ph-badge">3</b></span>
+            <span class="ph-item">Controle de Horas</span>
+          </div>
+        </div>
+      </div>
+      <span class="phone-home"></span>
     </div>
   </section>
 
@@ -2926,8 +3053,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
           <circle cx="108" cy="165" r="8" fill="#E8A33D" opacity="0.5"/>
           <circle cx="68" cy="116" r="8" fill="#E25C5C" opacity="0.5"/>
           <circle cx="82" cy="49" r="8" fill="#7A8099" opacity="0.5"/>
-          <polygon points="112,124 138,80 138,124" fill="#FFFFFF"/>
-          <polygon points="144,124 168,86 168,124" fill="#B8A97A"/>
+          <image href="assets/brand/mark-crop.png" x="107" y="85" width="66" height="34"/>
         </svg>
         <p class="diff-label strong">Uma plataforma. Tudo integrado. Escala real.</p>
       </div>
@@ -3023,8 +3149,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
 
       <div class="teaser-illus reveal">
         <svg class="teaser-ghost" width="220" height="150" viewBox="0 0 220 150" fill="none" aria-hidden="true">
-          <polygon points="0,140 96,16 96,140" fill="#FFFFFF" opacity="0.04"/>
-          <polygon points="110,140 206,30 206,140" fill="#B8A97A" opacity="0.04"/>
+          <image href="assets/brand/mark-crop.png" x="10" y="22" width="200" height="103" opacity="0.05"/>
         </svg>
         <svg class="teaser-cap" width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
           <polygon points="40,16 72,30 40,44 8,30" stroke="#B8A97A" stroke-width="2" fill="none"/>
@@ -3100,10 +3225,8 @@ button { font-family: var(--font-ui); cursor: pointer; }
     <div class="footer-grid">
       <div>
         <div class="logo">
-          <svg width="32" height="22" viewBox="0 0 32 22" fill="none">
-            <polygon points="0,20 14,2 14,20" fill="#FFFFFF"/>
-            <polygon points="16,20 30,4 30,20" fill="#B8A97A"/>
-          </svg>
+          <img src="assets/brand/mark-crop.png" width="42" height="22" alt="" style="display:block">
+
           <span class="logo-text">
             <span class="logo-kompass">kompass</span><span class="logo-hub">Hub</span>
           </span>
