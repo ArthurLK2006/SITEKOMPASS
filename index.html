@@ -4,10 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="kompass-v2">
-<meta name="description" content="Kompass HUB — Plataforma All-in-One para escritórios de advocacia e empresas B2B. CRM, Jurídico, Financeiro e RH com WhatsApp nativo. Tudo resolvido com um clique.">
-<title>Kompass HUB — O fim das abas infinitas</title>
+<title>Kompass HUB — A plataforma All-in-One para a advocacia de elite</title>
+<meta name="description" content="Kompass HUB — Plataforma All-in-One para escritórios de advocacia. CRM, Jurídico, Financeiro e RH integrados. WhatsApp nativo. Tudo resolvido com um clique.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://kompass.app.br">
+<meta property="og:title" content="Kompass HUB — O fim das abas infinitas">
+<meta property="og:description" content="CRM, Jurídico, Financeiro e RH unidos. WhatsApp nativo. Tudo resolvido com um clique.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kompass.app.br">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kompass HUB — O fim das abas infinitas">
+<meta name="twitter:description" content="CRM, Jurídico, Financeiro e RH unidos. WhatsApp nativo. Tudo resolvido com um clique.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Kompass HUB",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "Plataforma SaaS All-in-One para escritórios de advocacia.",
+  "offers": { "@type": "Offer", "priceCurrency": "BRL" },
+  "provider": {
+    "@type": "Organization",
+    "name": "Kompass HUB",
+    "url": "https://kompass.app.br",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Curitiba",
+      "addressRegion": "PR",
+      "addressCountry": "BR"
+    }
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
 
 /* ============================================================
    TOKENS
@@ -1567,6 +1600,469 @@ button { font-family: var(--font-ui); cursor: pointer; }
 }
 
 /* ============================================================
+   SESSÃO 3 — TOKENS ADICIONAIS
+   ============================================================ */
+:root {
+  --bg-deepest: #080A0F;
+  --error:      #FF6B6B;
+}
+
+#hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   SECTION 10 — ACADEMY TEASER
+   ============================================================ */
+#academy-teaser {
+  background: var(--bg-secondary);
+  padding: 100px 5%;
+  border-top: 1px solid var(--border-gold);
+  scroll-margin-top: 80px;
+}
+.teaser-grid {
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  gap: 56px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.eyebrow-left { text-align: left; }
+.teaser-h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(34px, 4.2vw, 52px);
+  line-height: 1.05;
+  color: var(--white-pure);
+  margin-bottom: 20px;
+}
+.teaser-body {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 17px;
+  color: var(--white-soft);
+  line-height: 1.7;
+  max-width: 440px;
+}
+.teaser-pills { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 36px; }
+.teaser-pills span {
+  border: 1px solid var(--border-gold);
+  color: var(--gold-primary);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 13px;
+}
+.btn-ghost-gold {
+  display: inline-block;
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-primary);
+  background: transparent;
+  padding: 13px 26px;
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 250ms, color 250ms;
+}
+.btn-ghost-gold:hover { background: var(--gold-primary); color: var(--bg-primary); }
+
+.teaser-illus { position: relative; height: 280px; }
+.teaser-ghost {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.teaser-cap { position: absolute; top: 0; right: 8%; }
+.ac-card {
+  position: absolute;
+  width: 260px;
+  max-width: 80%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-left: 2px solid var(--gold-primary);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: var(--font-ui);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+.ac-card b { display: block; font-weight: 500; font-size: 13px; color: var(--white-pure); }
+.ac-card span { font-size: 11px; font-weight: 300; color: var(--text-muted); }
+.ac-1 { top: 36px;  left: 0; }
+.ac-2 { top: 112px; left: 16px; transition-delay: 150ms; }
+.ac-3 { top: 188px; left: 32px; transition-delay: 300ms; }
+.teaser-illus.in-view .ac-card { opacity: 1; transform: none; }
+
+/* ============================================================
+   SECTION 11 — SOCIAL PROOF
+   ============================================================ */
+#social { background: var(--bg-primary); padding: 100px 5%; scroll-margin-top: 80px; }
+#social .sec-h2 { font-size: clamp(34px, 4.5vw, 56px); }
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 56px auto 0;
+}
+.t-card {
+  position: relative;
+  background: rgba(37, 42, 61, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-left: 3px solid var(--gold-primary);
+  border-radius: 10px;
+  padding: 36px 32px;
+}
+.t-card::before {
+  content: "\201C";
+  position: absolute;
+  top: 8px; left: 16px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 100px;
+  line-height: 1;
+  color: var(--gold-primary);
+  opacity: 0.12;
+  pointer-events: none;
+}
+.t-quote {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--white-soft);
+  line-height: 1.8;
+}
+.t-div { width: 60px; height: 1px; background: var(--gold-primary); margin: 24px 0 16px; }
+.t-role {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+}
+
+/* ============================================================
+   SECTION 12 — FINAL CTA + MODAL
+   ============================================================ */
+#final {
+  position: relative;
+  background: var(--bg-secondary);
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 5%;
+  overflow: hidden;
+  scroll-margin-top: 80px;
+}
+#final::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 60vmax;
+  height: 60vmax;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(184,169,122,0.2) 0%, transparent 55%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+.final-ghost {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.final-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.final-h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(44px, 6vw, 72px);
+  line-height: 1.05;
+  color: var(--white-pure);
+  text-align: center;
+}
+.final-body {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--white-soft);
+  max-width: 480px;
+  margin-top: 24px;
+  line-height: 1.7;
+}
+.final-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+.btn-xl { padding: 16px 36px; font-size: 15px; }
+.btn-wa {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border-gold);
+  color: var(--gold-primary);
+  background: transparent;
+  padding: 16px 28px;
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 250ms, color 250ms;
+}
+.btn-wa:hover { border-color: var(--gold-primary); color: var(--gold-light); }
+.final-trust {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  margin-top: 28px;
+  text-align: center;
+}
+
+/* Modal */
+#demo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: rgba(14, 17, 32, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  overflow-y: auto;
+}
+#demo-modal.modal-visible { opacity: 1; }
+.modal-inner {
+  position: relative;
+  max-width: 480px;
+  margin: 10vh auto 40px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 48px 40px;
+}
+.modal-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+}
+.modal-h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 32px;
+  color: var(--white-pure);
+  margin-bottom: 8px;
+}
+.modal-sub {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+.f-label {
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.f-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--white-soft);
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.f-input:focus { border-color: var(--gold-primary); outline: none; }
+#btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--gold-primary);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 250ms;
+}
+#btn-submit:hover { background: var(--gold-light); }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-8px); }
+  75%      { transform: translateX(8px); }
+}
+.shake { animation: shake 400ms; }
+
+#demo-success { display: none; text-align: center; animation: successIn 500ms var(--ease-out); }
+@keyframes successIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: none; }
+}
+#demo-success svg { display: block; margin: 0 auto 20px; }
+.success-h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  color: var(--white-pure);
+  margin-bottom: 12px;
+}
+.success-p {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--white-soft);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+.success-wa {
+  display: inline-block;
+  background: var(--gold-primary);
+  color: var(--bg-primary);
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 14px;
+  transition: background 250ms;
+}
+.success-wa:hover { background: var(--gold-light); }
+
+/* ============================================================
+   SECTION 13 — FOOTER
+   ============================================================ */
+#footer {
+  background: var(--bg-deepest);
+  padding: 64px 5% 32px;
+  border-top: 2px solid var(--border-gold);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-tag {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--gold-primary);
+  margin-top: 8px;
+}
+.footer-desc {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  max-width: 220px;
+  line-height: 1.6;
+}
+.footer-social { display: flex; gap: 16px; margin-top: 20px; }
+.footer-social a { color: var(--text-muted); transition: color 200ms; display: inline-flex; }
+.footer-social a:hover { color: var(--gold-primary); }
+.footer-label {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--gold-primary);
+  margin-bottom: 20px;
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 12px; }
+.footer-links a {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color 200ms;
+}
+.footer-links a:hover { color: var(--white-soft); }
+.footer-contact div { margin-bottom: 10px; font-family: var(--font-ui); }
+.fc-strong { font-weight: 400; font-size: 14px; color: var(--white-soft); }
+.fc-gold { font-weight: 300; font-size: 14px; color: var(--gold-primary); }
+.fc-gold svg { vertical-align: -2px; margin-right: 6px; }
+.fc-muted { font-weight: 300; font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid var(--border-subtle);
+  margin: 48px auto 0;
+  padding-top: 24px;
+  max-width: 1200px;
+}
+.footer-bottom span, .footer-bottom a {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--text-ghost);
+}
+
+/* ============================================================
+   SESSÃO 3 — RESPONSIVE
+   ============================================================ */
+@media (max-width: 980px) {
+  .teaser-grid { grid-template-columns: 1fr; gap: 40px; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+@media (max-width: 480px) {
+  .modal-inner { margin: 6vh 16px 32px; padding: 36px 24px; }
+  .btn-wa { width: 100%; justify-content: center; }
+  .btn-xl { width: 100%; text-align: center; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1080px) {
@@ -1682,11 +2178,11 @@ button { font-family: var(--font-ui); cursor: pointer; }
       <a class="nav-link" href="#ecosystem">Solu&ccedil;&otilde;es</a>
       <a class="nav-link nav-link-academy" href="#academy-landing">Academy</a>
       <a class="nav-link" href="#differentials">Por que Kompass</a>
-      <a class="nav-link" href="#testimonials">Depoimentos</a>
+      <a class="nav-link" href="#social">Depoimentos</a>
     </nav>
 
     <div class="nav-right">
-      <button class="nav-cta magnetic" type="button">Agendar Demo</button>
+      <button class="nav-cta magnetic open-demo" type="button">Agendar Demo</button>
       <button class="nav-burger" type="button" aria-label="Abrir menu" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
       </button>
@@ -1698,8 +2194,8 @@ button { font-family: var(--font-ui); cursor: pointer; }
     <a class="mobile-link" href="#ecosystem">Solu&ccedil;&otilde;es</a>
     <a class="mobile-link nav-link-academy" href="#academy-landing">Academy</a>
     <a class="mobile-link" href="#differentials">Por que Kompass</a>
-    <a class="mobile-link" href="#testimonials">Depoimentos</a>
-    <button class="nav-cta" type="button">Agendar Demo</button>
+    <a class="mobile-link" href="#social">Depoimentos</a>
+    <button class="nav-cta open-demo" type="button">Agendar Demo</button>
   </div>
 
   <!-- ============================================================
@@ -1762,6 +2258,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
        SECTION 2 — HERO
        ============================================================ -->
   <section id="hero">
+    <canvas id="hero-particles" aria-hidden="true"></canvas>
     <div class="hero-copy">
       <p class="hero-eyebrow anim-ready" data-delay="350">PLATAFORMA ALL-IN-ONE &middot; SAAS B2B &middot; LEGALTECH</p>
 
@@ -1775,7 +2272,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
       <p class="hero-sub anim-ready" data-delay="1200">CRM, Jur&iacute;dico, Financeiro e RH unidos em uma &uacute;nica plataforma. WhatsApp nativo. Tudo resolvido com um clique.</p>
 
       <div class="hero-ctas">
-        <button class="btn-gold magnetic anim-ready" data-delay="1400" type="button">Agendar Demonstra&ccedil;&atilde;o Gratuita</button>
+        <button class="btn-gold magnetic anim-ready open-demo" data-delay="1400" type="button">Agendar Demonstra&ccedil;&atilde;o Gratuita</button>
         <a class="btn-outline anim-ready" data-delay="1480" href="#trust">Conhecer o Ecossistema &rarr;</a>
       </div>
 
@@ -1987,7 +2484,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
               <li>Cat&aacute;logo de servi&ccedil;os e gest&atilde;o de clientes</li>
             </ul>
           </div>
-          <div class="mockup">
+          <div class="mockup tilt-card">
             <div class="kb">
               <div class="kb-col">
                 <h4>NOVO</h4>
@@ -2023,7 +2520,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
               <li>Dashboards de vendas em tempo real</li>
             </ul>
           </div>
-          <div class="mockup">
+          <div class="mockup tilt-card">
             <svg viewBox="0 0 340 80" width="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <marker id="arrow-gold" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
@@ -2057,7 +2554,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
               <li>Calculadora jur&iacute;dica e diret&oacute;rios integrados</li>
             </ul>
           </div>
-          <div class="mockup">
+          <div class="mockup tilt-card">
             <span class="dl-badge">3 prazos urgentes esta semana</span>
             <div class="dl-row"><span class="dl-date">10/06</span><span class="dl-name">Contesta&ccedil;&atilde;o &middot; Proc. 5012</span><span class="dl-due due-today">Hoje</span></div>
             <div class="dl-row"><span class="dl-date">12/06</span><span class="dl-name">R&eacute;plica &middot; Proc. 4988</span><span class="dl-due due-soon">2 dias</span></div>
@@ -2078,7 +2575,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
               <li>Presta&ccedil;&atilde;o de contas e reembolso simplificados</li>
             </ul>
           </div>
-          <div class="mockup">
+          <div class="mockup tilt-card">
             <div class="split">
               <div>
                 <div class="bars">
@@ -2109,7 +2606,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
               <li>Cursos com certifica&ccedil;&atilde;o em parceria institucional</li>
             </ul>
           </div>
-          <div class="mockup">
+          <div class="mockup tilt-card">
             <div class="lp">
               <div class="lp-node"><span class="lp-c done">&#10003;</span><span class="lp-label">Onboarding</span><span class="lp-pct">100%</span></div>
               <div class="lp-node"><span class="lp-c done">&#10003;</span><span class="lp-label">CRM</span><span class="lp-pct">100%</span></div>
@@ -2315,7 +2812,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
        ============================================================ -->
   <section id="one-click">
     <p class="sec-eyebrow reveal reveal-up">O DIFERENCIAL</p>
-    <h2 class="oc-h2 reveal reveal-up">Tudo conectado.</h2>
+    <h2 class="oc-h2 char-reveal">Tudo conectado.</h2>
     <div class="oc-rule reveal"></div>
     <p class="oc-h2b reveal reveal-up">Com um clique.</p>
     <p class="oc-body reveal reveal-up">Uma mensagem no WhatsApp aciona simultaneamente o CRM, o Jur&iacute;dico, o Financeiro e gera o relat&oacute;rio. Sem copiar. Sem colar.</p>
@@ -2507,6 +3004,210 @@ button { font-family: var(--font-ui); cursor: pointer; }
       </div>
     </div>
   </section>
+
+  <!-- ============================================================
+       SECTION 10 — ACADEMY TEASER
+       ============================================================ -->
+  <section id="academy-teaser">
+    <div class="teaser-grid">
+      <div>
+        <p class="sec-eyebrow eyebrow-left reveal reveal-up">MAIS DO QUE SOFTWARE</p>
+        <h2 class="teaser-h2 reveal reveal-up">Tecnologia s&oacute; funciona<br>com pessoas preparadas.</h2>
+        <p class="teaser-body reveal reveal-up">O Kompass Academy oferece MBAs, trilhas e playbooks para que sua equipe domine a opera&ccedil;&atilde;o e construa uma cultura de alta performance.</p>
+        <div class="teaser-pills reveal reveal-up">
+          <span>MBA em Gest&atilde;o Jur&iacute;dica</span>
+          <span>Trilha de LegalTech</span>
+        </div>
+        <a class="btn-ghost-gold nav-link-academy reveal reveal-up" href="#academy-landing">Conhecer o Kompass Academy &rarr;</a>
+      </div>
+
+      <div class="teaser-illus reveal">
+        <svg class="teaser-ghost" width="220" height="150" viewBox="0 0 220 150" fill="none" aria-hidden="true">
+          <polygon points="0,140 96,16 96,140" fill="#FFFFFF" opacity="0.04"/>
+          <polygon points="110,140 206,30 206,140" fill="#B8A97A" opacity="0.04"/>
+        </svg>
+        <svg class="teaser-cap" width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+          <polygon points="40,16 72,30 40,44 8,30" stroke="#B8A97A" stroke-width="2" fill="none"/>
+          <path d="M22 37V52C22 52 29 59 40 59C51 59 58 52 58 52V37" stroke="#B8A97A" stroke-width="2" fill="none"/>
+          <line x1="72" y1="30" x2="72" y2="48" stroke="#B8A97A" stroke-width="2"/>
+          <circle cx="72" cy="51" r="2.5" fill="#B8A97A"/>
+        </svg>
+        <div class="ac-card ac-1"><b>MBA em Gest&atilde;o Jur&iacute;dica Estrat&eacute;gica</b><span>24 meses &middot; Online</span></div>
+        <div class="ac-card ac-2"><b>Trilha de LegalTech</b><span>8 semanas &middot; Certificado</span></div>
+        <div class="ac-card ac-3"><b>Playbooks de Alta Performance</b><span>Acesso imediato</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 11 — SOCIAL PROOF
+       ============================================================ -->
+  <section id="social">
+    <p class="sec-eyebrow reveal reveal-up">PROVA SOCIAL</p>
+    <h2 class="sec-h2 reveal reveal-up">O que dizem quem j&aacute; opera<br>no pr&oacute;ximo n&iacute;vel.</h2>
+    <div class="oc-rule reveal"></div>
+
+    <div class="testimonials-grid">
+      <div class="t-card reveal reveal-scale stagger-1">
+        <p class="t-quote">A integra&ccedil;&atilde;o do WhatsApp ao CRM mudou o jogo. Com um clique, atendimento, financeiro e jur&iacute;dico est&atilde;o na mesma p&aacute;gina. Ganhamos uma velocidade absurda e eliminamos os gargalos.</p>
+        <div class="t-div"></div>
+        <p class="t-role">Diretor de Opera&ccedil;&otilde;es &mdash; COO</p>
+      </div>
+      <div class="t-card reveal reveal-scale stagger-2">
+        <p class="t-quote">As automa&ccedil;&otilde;es rodando junto com o funil de vendas, 100% conectado, nos deu uma previsibilidade de caixa e de convers&atilde;o que nunca tivemos antes.</p>
+        <div class="t-div"></div>
+        <p class="t-role">Head de Growth e Vendas B2B</p>
+      </div>
+      <div class="t-card reveal reveal-scale stagger-3">
+        <p class="t-quote">O Kompass n&atilde;o &eacute; s&oacute; um software. Se tornou a espinha dorsal e o motor de crescimento do nosso neg&oacute;cio.</p>
+        <div class="t-div"></div>
+        <p class="t-role">S&oacute;cio-Fundador</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 12 — FINAL CTA
+       ============================================================ -->
+  <section id="final">
+    <svg class="final-ghost" width="420" height="290" viewBox="0 0 420 290" fill="none" aria-hidden="true">
+      <polygon points="0,270 185,30 185,270" fill="#FFFFFF" opacity="0.03"/>
+      <polygon points="212,270 398,56 398,270" fill="#B8A97A" opacity="0.03"/>
+    </svg>
+    <div class="final-inner">
+      <p class="sec-eyebrow reveal reveal-up">PR&Oacute;XIMO PASSO</p>
+      <h2 class="final-h2 reveal reveal-up">Pronto para operar no<br>pr&oacute;ximo n&iacute;vel?</h2>
+      <div class="oc-rule reveal" style="width:180px"></div>
+      <p class="final-body reveal reveal-up">Agende uma demonstra&ccedil;&atilde;o gratuita e veja o Kompass HUB transformando sua opera&ccedil;&atilde;o em tempo real.</p>
+      <div class="final-ctas reveal reveal-up">
+        <button id="btn-demo" class="btn-gold btn-xl magnetic" type="button">Agendar Demonstra&ccedil;&atilde;o Gratuita</button>
+        <a class="btn-wa" href="https://wa.me/5500000000000" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1.2C3.9 1.2 1.4 3.7 1.4 6.8C1.4 7.9 1.7 8.9 2.3 9.8L1.5 12.5L4.3 11.7C5.1 12.2 6 12.4 7 12.4C10.1 12.4 12.6 9.9 12.6 6.8C12.6 3.7 10.1 1.2 7 1.2Z" stroke="#B8A97A" stroke-width="1"/>
+            <path d="M5 4.8C5.2 4.8 5.5 4.8 5.6 5.2C5.8 5.6 6 6.1 6 6.2C6.1 6.4 5.8 6.7 5.6 6.9C5.9 7.5 6.6 8.2 7.3 8.5C7.5 8.2 7.7 8 7.9 8C8.1 8.1 8.7 8.4 8.9 8.5C9.1 8.6 9.1 9.1 8.8 9.4C8.5 9.7 7.7 9.8 6.6 9.2C5.5 8.6 4.8 7.5 4.6 7C4.4 6.5 4.5 5.3 5 4.8Z" fill="#B8A97A"/>
+          </svg>
+          Falar via WhatsApp com um Especialista
+        </a>
+      </div>
+      <p class="final-trust reveal reveal-up">SEM COMPROMISSO &middot; SEM CART&Atilde;O DE CR&Eacute;DITO &middot; SETUP EM 24H</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 13 — FOOTER
+       ============================================================ -->
+  <footer id="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="logo">
+          <svg width="32" height="22" viewBox="0 0 32 22" fill="none">
+            <polygon points="0,20 14,2 14,20" fill="#FFFFFF"/>
+            <polygon points="16,20 30,4 30,20" fill="#B8A97A"/>
+          </svg>
+          <span class="logo-text">
+            <span class="logo-kompass">kompass</span><span class="logo-hub">Hub</span>
+          </span>
+        </div>
+        <p class="footer-tag">LEGAL &middot; TECH &middot; ACADEMY</p>
+        <p class="footer-desc">A plataforma All-in-One para escrit&oacute;rios de alta performance.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="1.5" y="1.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.3"/>
+              <line x1="6" y1="8.5" x2="6" y2="14.5" stroke="currentColor" stroke-width="1.3"/>
+              <circle cx="6" cy="5.6" r="1" fill="currentColor"/>
+              <path d="M9.5 14.5V10.5C9.5 9.4 10.4 8.5 11.5 8.5C12.6 8.5 13.5 9.4 13.5 10.5V14.5" stroke="currentColor" stroke-width="1.3" fill="none"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="1.5" y="1.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.3"/>
+              <circle cx="10" cy="10" r="3.8" stroke="currentColor" stroke-width="1.3"/>
+              <circle cx="14.6" cy="5.4" r="1" fill="currentColor"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1.2C3.9 1.2 1.4 3.7 1.4 6.8C1.4 7.9 1.7 8.9 2.3 9.8L1.5 12.5L4.3 11.7C5.1 12.2 6 12.4 7 12.4C10.1 12.4 12.6 9.9 12.6 6.8C12.6 3.7 10.1 1.2 7 1.2Z" stroke="currentColor" stroke-width="1"/>
+              <path d="M5 4.8C5.2 4.8 5.5 4.8 5.6 5.2C5.8 5.6 6 6.1 6 6.2C6.1 6.4 5.8 6.7 5.6 6.9C5.9 7.5 6.6 8.2 7.3 8.5C7.5 8.2 7.7 8 7.9 8C8.1 8.1 8.7 8.4 8.9 8.5C9.1 8.6 9.1 9.1 8.8 9.4C8.5 9.7 7.7 9.8 6.6 9.2C5.5 8.6 4.8 7.5 4.6 7C4.4 6.5 4.5 5.3 5 4.8Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-label">PLATAFORMA</p>
+        <ul class="footer-links">
+          <li><a href="#ecosystem">Solu&ccedil;&otilde;es</a></li>
+          <li><a class="nav-link-academy" href="#academy-landing">Academy</a></li>
+          <li><a href="#differentials">Por que Kompass</a></li>
+          <li><a href="#">Pre&ccedil;os</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <p class="footer-label">CONTATO</p>
+        <div class="fc-strong">Fale com um especialista</div>
+        <div class="fc-gold">contato@kompass.app.br</div>
+        <div class="fc-gold">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1.2C3.9 1.2 1.4 3.7 1.4 6.8C1.4 7.9 1.7 8.9 2.3 9.8L1.5 12.5L4.3 11.7C5.1 12.2 6 12.4 7 12.4C10.1 12.4 12.6 9.9 12.6 6.8C12.6 3.7 10.1 1.2 7 1.2Z" stroke="#B8A97A" stroke-width="1"/>
+          </svg>Via WhatsApp
+        </div>
+        <div class="fc-muted">Curitiba, PR &mdash; Brasil</div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2025 Kompass HUB. Todos os direitos reservados.</span>
+      <span><a href="#">Pol&iacute;tica de Privacidade</a> &middot; <a href="#">Termos de Uso</a></span>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       DEMO MODAL
+       ============================================================ -->
+  <div id="demo-modal" role="dialog" aria-modal="true" aria-label="Agendar demonstra&ccedil;&atilde;o">
+    <div class="modal-inner">
+      <button class="modal-close" id="modal-close" type="button" aria-label="Fechar">&times;</button>
+      <h3 class="modal-h3">Agendar Demonstra&ccedil;&atilde;o</h3>
+      <p class="modal-sub">Preencha o formul&aacute;rio e entraremos em contato em at&eacute; 2 horas &uacute;teis.</p>
+
+      <div id="demo-form">
+        <label class="f-label" for="f-name">Nome completo *</label>
+        <input class="f-input" type="text" id="f-name" required>
+
+        <label class="f-label" for="f-email">Email corporativo *</label>
+        <input class="f-input" type="email" id="f-email" required>
+
+        <label class="f-label" for="f-phone">WhatsApp *</label>
+        <input class="f-input" type="tel" id="f-phone" placeholder="(00) 00000-0000" required>
+
+        <label class="f-label" for="f-role">Cargo / Fun&ccedil;&atilde;o *</label>
+        <select class="f-input" id="f-role">
+          <option value="">Selecione...</option>
+          <option>S&oacute;cio / Fundador</option>
+          <option>Diretor de Opera&ccedil;&otilde;es</option>
+          <option>Gerente</option>
+          <option>Advogado</option>
+          <option>Outro</option>
+        </select>
+
+        <button id="btn-submit" type="button">Confirmar Agendamento</button>
+      </div>
+
+      <div id="demo-success">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="30" r="28" stroke="#B8A97A" stroke-width="2"/>
+          <path d="M18 31L26.5 39.5L42 22" stroke="#B8A97A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3 class="success-h3">Obrigado, <span class="success-name"></span>!</h3>
+        <p class="success-p">Entraremos em contato em at&eacute; 2 horas &uacute;teis pelo WhatsApp.</p>
+        <a class="success-wa" href="https://wa.me/5500000000000" target="_blank" rel="noopener">Falar pelo WhatsApp agora &rarr;</a>
+      </div>
+    </div>
+  </div>
 
 </div><!-- /main-content -->
 
@@ -2726,6 +3427,172 @@ button { font-family: var(--font-ui); cursor: pointer; }
   document.querySelectorAll('#differentials .stats-row').forEach(function (el) {
     statsObserver.observe(el);
   });
+
+  /* ==========================================================
+     SESSÃO 3
+     ========================================================== */
+
+  /* Demo modal */
+  var modal = document.getElementById('demo-modal');
+  function openModal() {
+    modal.style.display = 'block';
+    setTimeout(function () { modal.classList.add('modal-visible'); }, 10);
+  }
+  function closeModal() {
+    modal.classList.remove('modal-visible');
+    setTimeout(function () { modal.style.display = 'none'; }, 300);
+  }
+  document.querySelectorAll('#btn-demo, .open-demo').forEach(function (btn) {
+    btn.addEventListener('click', openModal);
+  });
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('modal-visible')) closeModal();
+  });
+
+  /* Phone mask (formato brasileiro) */
+  var phoneInput = document.getElementById('f-phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function (e) {
+      var v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 2) v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
+      if (v.length > 10) v = v.slice(0, 10) + '-' + v.slice(10);
+      e.target.value = v;
+    });
+  }
+
+  /* Form validation + success state */
+  document.getElementById('btn-submit').addEventListener('click', function () {
+    var nameEl = document.getElementById('f-name');
+    var emailEl = document.getElementById('f-email');
+    var phoneEl = document.getElementById('f-phone');
+    var roleEl = document.getElementById('f-role');
+    var name = nameEl.value.trim();
+    var email = emailEl.value.trim();
+    var phone = phoneEl.value.trim();
+    var role = roleEl.value;
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var valid = true;
+    [
+      [nameEl, name === ''],
+      [emailEl, !emailRegex.test(email)],
+      [phoneEl, phone.length < 14],
+      [roleEl, role === '']
+    ].forEach(function (pair) {
+      var el = pair[0], invalid = pair[1];
+      if (invalid) {
+        el.style.borderColor = 'var(--error)';
+        el.classList.add('shake');
+        setTimeout(function () { el.classList.remove('shake'); }, 400);
+        valid = false;
+      } else {
+        el.style.borderColor = '';
+      }
+    });
+    if (!valid) return;
+    var firstName = name.split(' ')[0];
+    document.getElementById('demo-form').style.display = 'none';
+    var success = document.getElementById('demo-success');
+    success.style.display = 'block';
+    success.querySelector('.success-name').textContent = firstName;
+  });
+
+  /* Card tilt (mockups do ecossistema) */
+  document.querySelectorAll('.tilt-card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transition = 'transform 0s';
+      card.style.transform = 'perspective(800px) rotateY(' + (x * 12) + 'deg) rotateX(' + (-y * 12) + 'deg) translateY(-4px)';
+    });
+    card.addEventListener('mouseleave', function () {
+      card.style.transition = 'transform 400ms var(--ease-out)';
+      card.style.transform = '';
+    });
+  });
+
+  /* Char split reveal */
+  document.querySelectorAll('.char-reveal').forEach(function (el) {
+    var text = el.textContent;
+    el.innerHTML = text.split('').map(function (ch) {
+      return ch === ' '
+        ? '&nbsp;'
+        : '<span class="char" style="display:inline-block;opacity:0;transform:translateY(60%);transition:opacity 400ms,transform 400ms var(--ease-out)">' + ch + '</span>';
+    }).join('');
+    var charObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.char').forEach(function (c, i) {
+            setTimeout(function () {
+              c.style.opacity = '1';
+              c.style.transform = 'translateY(0)';
+            }, i * 20);
+          });
+          charObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    charObserver.observe(el);
+  });
+
+  /* Parallax sutil no hero */
+  var heroCopy = document.querySelector('.hero-copy');
+  var heroDiagram = document.querySelector('.hero-orbital-wrap');
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY;
+    if (y > window.innerHeight * 1.5) return;
+    if (heroCopy) heroCopy.style.transform = 'translateY(' + (y * 0.12) + 'px)';
+    if (heroDiagram && heroDiagram.classList.contains('anim-visible')) {
+      heroDiagram.style.transform = 'translateY(' + (y * 0.06) + 'px)';
+    }
+  }, { passive: true });
+
+  /* Partículas flutuantes no hero (canvas) */
+  var canvas = document.getElementById('hero-particles');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    function seedParticles() {
+      particles = [];
+      for (var i = 0; i < 28; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          r: Math.random() * 1.5 + 0.5,
+          a: Math.random() * 0.2 + 0.08
+        });
+      }
+    }
+    function drawParticles() {
+      // Redimensiona quando o hero fica visível ou a janela muda de tamanho
+      if (canvas.offsetWidth > 0 && canvas.width !== canvas.offsetWidth) {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        seedParticles();
+      }
+      if (canvas.width > 0) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(function (p) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(184,169,122,' + p.a + ')';
+          ctx.fill();
+        });
+      }
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+  }
 })();
 </script>
 </body>
