@@ -403,8 +403,12 @@ body::after{
 .oneclick .sub{font-size:clamp(19px,3vw,22px);font-weight:300;color:var(--white-soft);margin-top:28px}
 .oneclick .body{font-size:17px;font-weight:300;color:var(--text-muted);max-width:520px;margin:24px auto 0;line-height:1.65}
 
-.flow-wrap{margin-top:72px;display:flex;justify-content:center}
-.flow-wrap svg{width:100%;max-width:820px;height:auto;overflow:visible}
+.flow-wrap{margin-top:88px;display:flex;justify-content:center}
+.flow-wrap svg{width:100%;max-width:1080px;height:auto;overflow:visible}
+.flow-card{cursor:pointer}
+.flow-card rect{transition:filter .4s var(--ease),stroke .3s}
+.flow-card:hover rect{filter:drop-shadow(0 0 18px rgba(184,169,122,.9))!important;stroke:var(--gold-light)!important}
+.flow-card:hover .hub-card-title{fill:var(--gold-light)}
 
 /* Path traçado UMA VEZ na entrada (drawn) + glow contínuo */
 .flow-path{
@@ -470,10 +474,11 @@ body::after{
 .compare-hint{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-ghost);margin-top:14px;opacity:.7}
 
 /* SCATTER STAGE — caos de ferramentas (drag em web elástica) */
-.scatter-stage,.orbit-stage{
-  position:relative;width:100%;max-width:340px;aspect-ratio:1.4/1;margin:0 auto;
+.scatter-stage{
+  position:relative;width:100%;max-width:440px;aspect-ratio:1/1;margin:0 auto;
   touch-action:none;user-select:none;-webkit-user-select:none;
 }
+.orbit-stage{display:none}
 .scatter-stage svg,.orbit-stage svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .scatter-web{stroke:var(--text-ghost);stroke-width:1;opacity:.5;fill:none}
 .scatter-node{
@@ -490,7 +495,154 @@ body::after{
 .scatter-node.grabbed{cursor:grabbing;border-color:var(--gold-primary);color:var(--white-pure);box-shadow:0 6px 24px rgba(0,0,0,.4);z-index:5}
 .scatter-node .ndot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6}
 
-/* ORBIT STAGE — módulos rotulados orbitando + drag */
+/* ================================================
+   RADIAL ORBITAL TIMELINE (porta vanilla do React)
+   ================================================ */
+.ro-stage{
+  position:relative;width:100%;max-width:560px;aspect-ratio:1/1;margin:0 auto;
+  perspective:1200px;cursor:default;
+}
+.ro-orbit-ring{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:70%;aspect-ratio:1/1;border-radius:50%;
+  border:1px solid var(--border-gold);opacity:.55;pointer-events:none;
+}
+.ro-orbit-ring.outer{width:90%;border-style:dashed;border-color:var(--gold-primary);opacity:.2}
+.ro-orbit-ring.inner{width:48%;opacity:.3}
+
+/* CORE (centro) — bússola pulsante */
+.ro-core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:104px;height:104px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,var(--gold-light) 0%,var(--gold-primary) 50%,var(--gold-dark) 100%);
+  display:flex;align-items:center;justify-content:center;z-index:20;
+  box-shadow:
+    inset 0 0 24px rgba(0,0,0,.35),
+    0 0 0 1px rgba(212,200,154,.6),
+    0 0 50px rgba(184,169,122,.55),
+    0 0 120px rgba(184,169,122,.25);
+  animation:coreBreathe 4s ease-in-out infinite;
+}
+@keyframes coreBreathe{0%,100%{box-shadow:inset 0 0 24px rgba(0,0,0,.35),0 0 0 1px rgba(212,200,154,.6),0 0 50px rgba(184,169,122,.55),0 0 120px rgba(184,169,122,.25)}50%{box-shadow:inset 0 0 28px rgba(0,0,0,.4),0 0 0 1px rgba(212,200,154,.8),0 0 80px rgba(184,169,122,.8),0 0 160px rgba(184,169,122,.4)}}
+.ro-core img{width:62px;height:62px;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5));position:relative;z-index:2}
+.ro-core::before,.ro-core::after{
+  content:"";position:absolute;border-radius:50%;
+  border:1px solid var(--gold-light);pointer-events:none;
+}
+.ro-core::before{inset:-14px;opacity:.7;animation:roPing 3s ease-out infinite}
+.ro-core::after{inset:-28px;opacity:.5;animation:roPing 3s ease-out 1.2s infinite}
+@keyframes roPing{0%{transform:scale(.55);opacity:.65}80%{opacity:0}100%{transform:scale(1.5);opacity:0}}
+
+/* NODE */
+.ro-node{
+  position:absolute;left:50%;top:50%;
+  transition:transform .85s cubic-bezier(.4,0,.2,1),opacity .4s,filter .4s;
+  cursor:pointer;will-change:transform,opacity;
+}
+.ro-node-pulse{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:72px;height:72px;border-radius:50%;
+  background:radial-gradient(circle,rgba(184,169,122,.45) 0%,rgba(184,169,122,0) 70%);
+  opacity:0;pointer-events:none;transition:opacity .35s;
+}
+.ro-node.is-related .ro-node-pulse,
+.ro-node.is-active  .ro-node-pulse{opacity:1;animation:nodePulse 1.8s ease-in-out infinite}
+@keyframes nodePulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.25)}}
+
+.ro-dot{
+  position:relative;width:48px;height:48px;border-radius:50%;
+  background:var(--bg-card);border:2px solid var(--gold-primary);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold-primary);box-shadow:0 6px 18px rgba(0,0,0,.45);
+  transition:transform .35s,background .35s,color .35s,box-shadow .35s,border-color .35s;
+}
+.ro-dot svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7}
+.ro-node:hover .ro-dot{transform:scale(1.1);border-color:var(--gold-light)}
+.ro-node.is-active .ro-dot{
+  background:var(--gold-light);color:var(--bg-primary);
+  transform:scale(1.5);
+  border-color:var(--white-pure);
+  box-shadow:0 0 0 4px rgba(184,169,122,.25),0 12px 32px rgba(0,0,0,.6);
+}
+.ro-node.is-related .ro-dot{
+  background:rgba(184,169,122,.22);color:var(--gold-light);
+  border-color:var(--gold-light);
+}
+
+.ro-label{
+  position:absolute;top:56px;left:50%;transform:translateX(-50%);
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--white-soft);
+  white-space:nowrap;transition:color .35s,transform .35s,letter-spacing .35s;
+}
+.ro-node.is-active .ro-label{color:var(--gold-light);transform:translateX(-50%) scale(1.18);letter-spacing:.24em}
+
+/* CARD (popup info) */
+.ro-card{
+  position:absolute;top:104px;left:50%;transform:translateX(-50%) translateY(-12px);
+  width:296px;
+  background:rgba(8,10,15,.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--border-gold);
+  padding:20px 22px;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .4s,transform .4s,visibility 0s .4s;
+  z-index:80;box-shadow:0 16px 60px rgba(0,0,0,.7);
+}
+.ro-card::before{
+  content:"";position:absolute;left:50%;top:-1px;transform:translate(-50%,-100%);
+  width:1px;height:18px;background:var(--gold-primary);
+}
+.ro-node.is-active .ro-card{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+  transition:opacity .4s,transform .4s,visibility 0s 0s;
+}
+.ro-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.ro-badge{
+  font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid;border-radius:100px;
+}
+.ro-badge.completed{color:var(--bg-primary);background:var(--gold-primary);border-color:var(--gold-primary)}
+.ro-badge.in-progress{color:var(--gold-light);background:rgba(184,169,122,.12);border-color:var(--gold-primary)}
+.ro-badge.pending{color:var(--text-muted);background:transparent;border-color:var(--border-subtle)}
+.ro-card-date{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--text-muted);letter-spacing:.1em}
+.ro-card h4{
+  font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;
+  color:var(--white-pure);margin:0 0 10px;line-height:1.1;
+}
+.ro-card p{font-size:13px;color:var(--white-soft);font-weight:300;line-height:1.55;margin:0 0 16px}
+.ro-energy{padding-top:14px;border-top:1px solid var(--border-subtle)}
+.ro-energy-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-bottom:7px;letter-spacing:.06em}
+.ro-energy-row .ro-energy-label{display:flex;align-items:center;gap:5px;text-transform:uppercase}
+.ro-energy-row .ro-pct{font-family:'DM Sans',sans-serif;color:var(--gold-light);font-weight:600}
+.ro-bar{width:100%;height:3px;background:rgba(184,169,122,.1);border-radius:2px;overflow:hidden}
+.ro-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-primary),var(--gold-light));border-radius:2px;transition:width .8s var(--ease)}
+.ro-related{margin-top:16px;padding-top:14px;border-top:1px solid var(--border-subtle)}
+.ro-related-label{
+  font-size:9px;letter-spacing:.18em;color:var(--text-muted);text-transform:uppercase;
+  margin-bottom:9px;display:flex;align-items:center;gap:5px;
+}
+.ro-related-label::before{content:"↗";font-size:11px;color:var(--gold-primary)}
+.ro-related-btns{display:flex;flex-wrap:wrap;gap:6px}
+.ro-related-btn{
+  font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.04em;
+  padding:6px 12px;border:1px solid var(--border-gold);
+  background:transparent;color:var(--white-soft);
+  display:inline-flex;align-items:center;gap:6px;
+  transition:background .25s,color .25s,border-color .25s;cursor:pointer;
+}
+.ro-related-btn:hover{background:var(--gold-glow);color:var(--white-pure);border-color:var(--gold-primary)}
+.ro-related-btn::after{content:"→";opacity:.6;font-size:11px}
+
+/* hint texto abaixo */
+.ro-hint{
+  position:absolute;left:50%;bottom:-40px;transform:translateX(-50%);
+  font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--text-ghost);opacity:.7;white-space:nowrap;
+}
+
+/* (CSS antigo do orbital — mantido apenas pro fallback) */
 .orbit-stage{aspect-ratio:1.4/1}
 .orbit-svg .o-ring-out{fill:none;stroke:var(--gold-primary);stroke-width:1;stroke-dasharray:2 4;opacity:.22}
 .orbit-svg .o-ring{fill:none;stroke:var(--border-gold);stroke-width:1;opacity:.7}
@@ -839,7 +991,7 @@ body::after{
 </section>
 
 <!-- ============================ ECOSYSTEM TOUR ============================ -->
-<section class="section" id="ecosystem">
+<section class="section section-enter section-fb" id="ecosystem">
   <div class="eco-watermark" aria-hidden="true">
     <img src="assets/brand/mark-trans.png" alt="">
   </div>
@@ -1054,7 +1206,7 @@ body::after{
 </section>
 
 <!-- ============================ ONE-CLICK MOMENT ============================ -->
-<section class="section oneclick" id="oneclick">
+<section class="section oneclick section-enter section-fb" id="oneclick">
   <div class="gold-rule" style="position:absolute;top:0;left:0"></div>
   <div class="container">
     <div class="reveal">
@@ -1066,67 +1218,103 @@ body::after{
     </div>
 
     <div class="flow-wrap" id="flowWrap">
-      <svg viewBox="0 0 800 380" fill="none" aria-label="Fluxo de automação com um clique">
+      <svg viewBox="0 0 1080 480" fill="none" aria-label="Fluxo de automação com um clique">
         <defs>
           <radialGradient id="bubbleAura" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#B8A97A" stop-opacity=".35"/>
+            <stop offset="0%" stop-color="#B8A97A" stop-opacity=".5"/>
+            <stop offset="60%" stop-color="#B8A97A" stop-opacity=".08"/>
             <stop offset="100%" stop-color="#B8A97A" stop-opacity="0"/>
           </radialGradient>
+          <linearGradient id="flowGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#D4C89A" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#B8A97A" stop-opacity=".4"/>
+          </linearGradient>
         </defs>
 
-        <!-- WhatsApp bubble com aura + badge "1 clique" -->
+        <!-- WhatsApp HERO bubble — mais alto, com aura grande -->
         <g class="flow-bubble">
-          <circle cx="400" cy="58" r="56" fill="url(#bubbleAura)"/>
-          <rect x="360" y="20" width="80" height="64" rx="14" fill="#B8A97A" fill-opacity=".12" stroke="#B8A97A" stroke-width="1.6"/>
-          <path d="M388 84 l4 -14 a14 14 0 1 1 10 10 z" fill="#B8A97A" fill-opacity=".12" stroke="#B8A97A" stroke-width="1.6"/>
-          <circle cx="392" cy="50" r="2.6" fill="#B8A97A"/><circle cx="400" cy="50" r="2.6" fill="#B8A97A"/><circle cx="408" cy="50" r="2.6" fill="#B8A97A"/>
-          <!-- badge 1 clique -->
-          <g transform="translate(450, 26)">
-            <rect x="0" y="0" width="76" height="22" rx="11" fill="#0E1120" stroke="#B8A97A" stroke-width="1"/>
-            <circle cx="11" cy="11" r="3" fill="#B8A97A"/>
-            <text x="21" y="15" font-family="DM Sans" font-size="10" font-weight="500" fill="#B8A97A">1 clique</text>
+          <circle cx="540" cy="100" r="120" fill="url(#bubbleAura)"/>
+          <!-- "phone screen" stylized -->
+          <rect x="470" y="34" width="140" height="118" rx="20" fill="#0E1120" stroke="#B8A97A" stroke-width="2"/>
+          <!-- top status bar -->
+          <rect x="488" y="48" width="34" height="4" rx="2" fill="#B8A97A" opacity=".4"/>
+          <circle cx="598" cy="50" r="2" fill="#B8A97A" opacity=".7"/>
+          <!-- incoming message bubble -->
+          <rect x="486" y="62" width="92" height="32" rx="8" fill="#B8A97A" fill-opacity=".18" stroke="#B8A97A" stroke-width="1.2"/>
+          <text x="495" y="76" font-family="DM Sans" font-size="9" fill="#F0EDE8">Oi, quero fechar</text>
+          <text x="495" y="88" font-family="DM Sans" font-size="9" fill="#F0EDE8">o contrato hoje</text>
+          <!-- typing dots / time -->
+          <text x="572" y="104" font-family="DM Sans" font-size="7" fill="#7A8099" text-anchor="end">14:32 ✓✓</text>
+          <!-- WhatsApp icon at bottom -->
+          <circle cx="540" cy="128" r="14" fill="#B8A97A"/>
+          <path d="M533 138 l1.6 -5.6 a8 8 0 1 1 4.4 4.4 z" fill="none" stroke="#0E1120" stroke-width="1.8"/>
+
+          <!-- badge "1 clique" lateral -->
+          <g transform="translate(622, 78)">
+            <rect x="0" y="0" width="96" height="28" rx="14" fill="#0E1120" stroke="#B8A97A" stroke-width="1.2"/>
+            <circle cx="14" cy="14" r="4" fill="#B8A97A"/>
+            <circle cx="14" cy="14" r="4" fill="#B8A97A" opacity=".4">
+              <animate attributeName="r" values="4;9;4" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values=".4;0;.4" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <text x="26" y="18" font-family="DM Sans" font-size="11" font-weight="600" fill="#B8A97A" letter-spacing="0.5">1 clique</text>
           </g>
         </g>
 
-        <!-- main stem -->
-        <path class="flow-path p1" style="--len:80" d="M400 100 L400 170"/>
-        <!-- branches -->
-        <path class="flow-path p2" style="--len:300" d="M400 170 L400 200 L110 200 L110 280"/>
-        <path class="flow-path p3" style="--len:200" d="M400 170 L400 200 L303 200 L303 280"/>
-        <path class="flow-path p4" style="--len:200" d="M400 170 L400 200 L497 200 L497 280"/>
-        <path class="flow-path p5" style="--len:300" d="M400 170 L400 200 L690 200 L690 280"/>
+        <!-- Caption above branches -->
+        <text x="540" y="230" font-family="DM Sans" font-size="11" font-weight="500" fill="#B8A97A" text-anchor="middle" letter-spacing="3" opacity=".7">DISPARA AUTOMAÇÃO</text>
 
-        <!-- destination cards (com ícones) -->
+        <!-- main stem -->
+        <path class="flow-path p1" style="--len:90" d="M540 240 L540 290"/>
+        <!-- branches gold rule (linha horizontal central) -->
+        <path class="flow-path p2" style="--len:480" d="M540 290 L540 310 L120 310 L120 360"/>
+        <path class="flow-path p3" style="--len:280" d="M540 290 L540 310 L400 310 L400 360"/>
+        <path class="flow-path p4" style="--len:280" d="M540 290 L540 310 L680 310 L680 360"/>
+        <path class="flow-path p5" style="--len:480" d="M540 290 L540 310 L960 310 L960 360"/>
+
+        <!-- destination cards (maiores + ícones grandes) -->
         <g class="flow-card c1">
-          <rect x="30" y="280" width="160" height="64" rx="2" class="hub-card-bg"/>
-          <g class="hub-card-icon" transform="translate(46, 300)"><use href="#ic-crm" width="20" height="20"/></g>
-          <text class="hub-card-title" x="76" y="306">Atendimento</text>
-          <text class="hub-card-sub" x="76" y="324">CRM atualizado</text>
+          <rect x="20" y="360" width="200" height="92" rx="3" class="hub-card-bg"/>
+          <g class="hub-card-icon" transform="translate(38, 380)"><use href="#ic-crm" width="28" height="28"/></g>
+          <text class="hub-card-title" x="80" y="392" font-size="14">Atendimento</text>
+          <text class="hub-card-sub" x="80" y="412" font-size="10">CRM atualizado · Lead capturado</text>
+          <rect x="38" y="424" width="120" height="3" rx="1.5" fill="#B8A97A" opacity=".25"/>
+          <rect x="38" y="424" width="120" height="3" rx="1.5" fill="#B8A97A"><animate attributeName="width" values="0;120" dur="2s" begin="0s" fill="freeze"/></rect>
+          <text x="38" y="442" font-family="DM Sans" font-size="9" fill="#B8A97A" font-weight="500">+ 1 oportunidade</text>
         </g>
         <g class="flow-card c2">
-          <rect x="223" y="280" width="160" height="64" rx="2" class="hub-card-bg"/>
-          <g class="hub-card-icon" transform="translate(239, 300)"><use href="#ic-legal" width="20" height="20"/></g>
-          <text class="hub-card-title" x="269" y="306">Jurídico</text>
-          <text class="hub-card-sub" x="269" y="324">Prazo registrado</text>
+          <rect x="300" y="360" width="200" height="92" rx="3" class="hub-card-bg"/>
+          <g class="hub-card-icon" transform="translate(318, 380)"><use href="#ic-legal" width="28" height="28"/></g>
+          <text class="hub-card-title" x="360" y="392" font-size="14">Jurídico</text>
+          <text class="hub-card-sub" x="360" y="412" font-size="10">Prazo agendado · Contrato pronto</text>
+          <rect x="318" y="424" width="120" height="3" rx="1.5" fill="#B8A97A" opacity=".25"/>
+          <rect x="318" y="424" width="120" height="3" rx="1.5" fill="#B8A97A"><animate attributeName="width" values="0;120" dur="2s" begin=".5s" fill="freeze"/></rect>
+          <text x="318" y="442" font-family="DM Sans" font-size="9" fill="#B8A97A" font-weight="500">Audiência registrada</text>
         </g>
         <g class="flow-card c3">
-          <rect x="417" y="280" width="160" height="64" rx="2" class="hub-card-bg"/>
-          <g class="hub-card-icon" transform="translate(433, 300)"><use href="#ic-fin" width="20" height="20"/></g>
-          <text class="hub-card-title" x="463" y="306">Financeiro</text>
-          <text class="hub-card-sub" x="463" y="324">Cobrança gerada</text>
+          <rect x="580" y="360" width="200" height="92" rx="3" class="hub-card-bg"/>
+          <g class="hub-card-icon" transform="translate(598, 380)"><use href="#ic-fin" width="28" height="28"/></g>
+          <text class="hub-card-title" x="640" y="392" font-size="14">Financeiro</text>
+          <text class="hub-card-sub" x="640" y="412" font-size="10">Cobrança gerada · Pix enviado</text>
+          <rect x="598" y="424" width="120" height="3" rx="1.5" fill="#B8A97A" opacity=".25"/>
+          <rect x="598" y="424" width="120" height="3" rx="1.5" fill="#B8A97A"><animate attributeName="width" values="0;120" dur="2s" begin="1s" fill="freeze"/></rect>
+          <text x="598" y="442" font-family="DM Sans" font-size="9" fill="#B8A97A" font-weight="500">R$ 12.400,00 a receber</text>
         </g>
         <g class="flow-card c4">
-          <rect x="610" y="280" width="160" height="64" rx="2" class="hub-card-bg"/>
-          <g class="hub-card-icon" transform="translate(626, 300)"><use href="#ic-academy" width="20" height="20"/></g>
-          <text class="hub-card-title" x="656" y="306">Relatório</text>
-          <text class="hub-card-sub" x="656" y="324">BI atualizado</text>
+          <rect x="860" y="360" width="200" height="92" rx="3" class="hub-card-bg"/>
+          <g class="hub-card-icon" transform="translate(878, 380)"><use href="#ic-academy" width="28" height="28"/></g>
+          <text class="hub-card-title" x="920" y="392" font-size="14">Relatório</text>
+          <text class="hub-card-sub" x="920" y="412" font-size="10">BI consolidado · Pronto p/ time</text>
+          <rect x="878" y="424" width="120" height="3" rx="1.5" fill="#B8A97A" opacity=".25"/>
+          <rect x="878" y="424" width="120" height="3" rx="1.5" fill="#B8A97A"><animate attributeName="width" values="0;120" dur="2s" begin="1.5s" fill="freeze"/></rect>
+          <text x="878" y="442" font-family="DM Sans" font-size="9" fill="#B8A97A" font-weight="500">+ 4 dashboards</text>
         </g>
 
-        <!-- traveling dots (energia) -->
-        <circle class="flow-dot hub-dot" r="3.5"><animateMotion dur="6s" repeatCount="indefinite" path="M400,170 L400,200 L110,200 L110,280"/></circle>
-        <circle class="flow-dot hub-dot" r="3.5"><animateMotion dur="6s" begin="1.5s" repeatCount="indefinite" path="M400,170 L400,200 L303,200 L303,280"/></circle>
-        <circle class="flow-dot hub-dot" r="3.5"><animateMotion dur="6s" begin="3s" repeatCount="indefinite" path="M400,170 L400,200 L497,200 L497,280"/></circle>
-        <circle class="flow-dot hub-dot" r="3.5"><animateMotion dur="6s" begin="4.5s" repeatCount="indefinite" path="M400,170 L400,200 L690,200 L690,280"/></circle>
+        <!-- traveling dots (energia) — 3 ondas por path pra parecer fluxo contínuo -->
+        <circle class="flow-dot hub-dot" r="4.5"><animateMotion dur="5s" repeatCount="indefinite" path="M540,290 L540,310 L120,310 L120,360"/></circle>
+        <circle class="flow-dot hub-dot" r="4.5"><animateMotion dur="5s" begin="1.2s" repeatCount="indefinite" path="M540,290 L540,310 L400,310 L400,360"/></circle>
+        <circle class="flow-dot hub-dot" r="4.5"><animateMotion dur="5s" begin="2.4s" repeatCount="indefinite" path="M540,290 L540,310 L680,310 L680,360"/></circle>
+        <circle class="flow-dot hub-dot" r="4.5"><animateMotion dur="5s" begin="3.6s" repeatCount="indefinite" path="M540,290 L540,310 L960,310 L960,360"/></circle>
       </svg>
     </div>
   </div>
@@ -1134,7 +1322,7 @@ body::after{
 </section>
 
 <!-- ============================ DIFFERENTIALS ============================ -->
-<section class="section" id="differentials">
+<section class="section section-enter section-fb" id="differentials">
   <div class="container">
     <div class="diff-head reveal">
       <span class="eyebrow">Por que Kompass HUB</span>
@@ -1161,35 +1349,143 @@ body::after{
       <div class="compare-arrow reveal" aria-hidden="true"><span>&raquo;</span></div>
 
       <div class="compare-side reveal-right">
-        <div class="orbit-stage" id="orbitStage" aria-label="Módulos unificados no Kompass HUB — arraste os pills">
-          <svg class="orbit-svg" viewBox="0 0 340 240" preserveAspectRatio="none">
-            <circle class="o-ring-out" cx="170" cy="120" r="108"/>
-            <g class="orbit-rot" style="transform-origin:170px 120px">
-              <circle class="o-ring" cx="170" cy="120" r="88"/>
-            </g>
-            <!-- connectors center → cada módulo (atualizados via JS) -->
-            <path class="o-conn" id="oConn0" d=""/>
-            <path class="o-conn" id="oConn1" d=""/>
-            <path class="o-conn" id="oConn2" d=""/>
-            <path class="o-conn" id="oConn3" d=""/>
-            <path class="o-conn" id="oConn4" d=""/>
-            <!-- centro -->
-            <circle class="o-center-aura" cx="170" cy="120" r="42"/>
-            <circle class="o-center" cx="170" cy="120" r="34"/>
-          </svg>
-          <!-- mark central animado (PNG real) -->
-          <div class="orbit-center-mark">
-            <img class="km-swing" src="assets/brand/mark-trans.png" alt="">
+        <div class="ro-stage" id="radialOrbital" aria-label="Módulos unificados no Kompass HUB — clique pra explorar">
+          <div class="ro-orbit-ring outer"></div>
+          <div class="ro-orbit-ring"></div>
+          <div class="ro-orbit-ring inner"></div>
+
+          <div class="ro-core">
+            <img src="assets/brand/mark-trans.png" alt="">
           </div>
-          <!-- 5 módulos rotulados (px/py em % da stage) -->
-          <div class="orbit-node" data-angle="0"   data-r="88"><span class="obadge"><svg viewBox="0 0 20 20"><use href="#ic-crm"/></svg></span>CRM</div>
-          <div class="orbit-node" data-angle="72"  data-r="88"><span class="obadge"><svg viewBox="0 0 20 20"><use href="#ic-legal"/></svg></span>Jurídico</div>
-          <div class="orbit-node" data-angle="144" data-r="88"><span class="obadge"><svg viewBox="0 0 20 20"><use href="#ic-fin"/></svg></span>Financeiro</div>
-          <div class="orbit-node" data-angle="216" data-r="88"><span class="obadge"><svg viewBox="0 0 20 20"><use href="#ic-academy"/></svg></span>Academy</div>
-          <div class="orbit-node" data-angle="288" data-r="88"><span class="obadge"><svg viewBox="0 0 20 20"><use href="#ic-whats"/></svg></span>WhatsApp</div>
+
+          <div class="ro-node" data-id="1" data-related="2,5">
+            <div class="ro-node-pulse"></div>
+            <div class="ro-dot"><svg viewBox="0 0 20 20"><use href="#ic-crm"/></svg></div>
+            <div class="ro-label">CRM</div>
+            <div class="ro-card">
+              <div class="ro-card-head">
+                <span class="ro-badge completed">Ativo</span>
+                <span class="ro-card-date">01 · Comercial</span>
+              </div>
+              <h4>CRM &amp; Comercial</h4>
+              <p>Pipeline visual, propostas, assinaturas e WhatsApp nativo. Cada conversa vira oportunidade rastreada.</p>
+              <div class="ro-energy">
+                <div class="ro-energy-row"><span class="ro-energy-label">⚡ Cobertura</span><span class="ro-pct">95%</span></div>
+                <div class="ro-bar"><div class="ro-bar-fill" style="width:95%"></div></div>
+              </div>
+              <div class="ro-related">
+                <div class="ro-related-label">Conectado a</div>
+                <div class="ro-related-btns">
+                  <button class="ro-related-btn" data-target="2">Jurídico</button>
+                  <button class="ro-related-btn" data-target="5">WhatsApp</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ro-node" data-id="2" data-related="1,3">
+            <div class="ro-node-pulse"></div>
+            <div class="ro-dot"><svg viewBox="0 0 20 20"><use href="#ic-legal"/></svg></div>
+            <div class="ro-label">Jurídico</div>
+            <div class="ro-card">
+              <div class="ro-card-head">
+                <span class="ro-badge completed">Ativo</span>
+                <span class="ro-card-date">02 · Operacional</span>
+              </div>
+              <h4>Núcleo Jurídico</h4>
+              <p>Prazos, audiências, POPs, calculadora jurídica e diretórios. Sua operação legal sem gargalos.</p>
+              <div class="ro-energy">
+                <div class="ro-energy-row"><span class="ro-energy-label">⚡ Cobertura</span><span class="ro-pct">88%</span></div>
+                <div class="ro-bar"><div class="ro-bar-fill" style="width:88%"></div></div>
+              </div>
+              <div class="ro-related">
+                <div class="ro-related-label">Conectado a</div>
+                <div class="ro-related-btns">
+                  <button class="ro-related-btn" data-target="1">CRM</button>
+                  <button class="ro-related-btn" data-target="3">Financeiro</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ro-node" data-id="3" data-related="2,4">
+            <div class="ro-node-pulse"></div>
+            <div class="ro-dot"><svg viewBox="0 0 20 20"><use href="#ic-fin"/></svg></div>
+            <div class="ro-label">Financeiro</div>
+            <div class="ro-card">
+              <div class="ro-card-head">
+                <span class="ro-badge in-progress">Em curso</span>
+                <span class="ro-card-date">03 · Gestão</span>
+              </div>
+              <h4>Financeiro &amp; RH</h4>
+              <p>Cobrança automatizada, comissões, contratos e organograma. Caixa sincronizado com a operação.</p>
+              <div class="ro-energy">
+                <div class="ro-energy-row"><span class="ro-energy-label">⚡ Cobertura</span><span class="ro-pct">82%</span></div>
+                <div class="ro-bar"><div class="ro-bar-fill" style="width:82%"></div></div>
+              </div>
+              <div class="ro-related">
+                <div class="ro-related-label">Conectado a</div>
+                <div class="ro-related-btns">
+                  <button class="ro-related-btn" data-target="2">Jurídico</button>
+                  <button class="ro-related-btn" data-target="4">Academy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ro-node" data-id="4" data-related="3,5">
+            <div class="ro-node-pulse"></div>
+            <div class="ro-dot"><svg viewBox="0 0 20 20"><use href="#ic-academy"/></svg></div>
+            <div class="ro-label">Academy</div>
+            <div class="ro-card">
+              <div class="ro-card-head">
+                <span class="ro-badge in-progress">Em curso</span>
+                <span class="ro-card-date">04 · Formação</span>
+              </div>
+              <h4>Academy</h4>
+              <p>Trilhas de capacitação por função, playbooks operacionais e cursos com certificação institucional.</p>
+              <div class="ro-energy">
+                <div class="ro-energy-row"><span class="ro-energy-label">⚡ Cobertura</span><span class="ro-pct">70%</span></div>
+                <div class="ro-bar"><div class="ro-bar-fill" style="width:70%"></div></div>
+              </div>
+              <div class="ro-related">
+                <div class="ro-related-label">Conectado a</div>
+                <div class="ro-related-btns">
+                  <button class="ro-related-btn" data-target="3">Financeiro</button>
+                  <button class="ro-related-btn" data-target="5">WhatsApp</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ro-node" data-id="5" data-related="1,4">
+            <div class="ro-node-pulse"></div>
+            <div class="ro-dot"><svg viewBox="0 0 20 20"><use href="#ic-whats"/></svg></div>
+            <div class="ro-label">WhatsApp</div>
+            <div class="ro-card">
+              <div class="ro-card-head">
+                <span class="ro-badge completed">Nativo</span>
+                <span class="ro-card-date">05 · Comunicação</span>
+              </div>
+              <h4>WhatsApp Nativo</h4>
+              <p>Atendimento integrado a todos os módulos. Mensagem vira tarefa, prazo, cobrança — automaticamente.</p>
+              <div class="ro-energy">
+                <div class="ro-energy-row"><span class="ro-energy-label">⚡ Cobertura</span><span class="ro-pct">100%</span></div>
+                <div class="ro-bar"><div class="ro-bar-fill" style="width:100%"></div></div>
+              </div>
+              <div class="ro-related">
+                <div class="ro-related-label">Conectado a</div>
+                <div class="ro-related-btns">
+                  <button class="ro-related-btn" data-target="1">CRM</button>
+                  <button class="ro-related-btn" data-target="4">Academy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ro-hint">Clique nos módulos · auto-orbita</div>
         </div>
-        <p class="compare-label good">Com o Kompass HUB:<br>Uma plataforma. Cinco módulos. Tudo conectado.</p>
-        <p class="compare-hint">Arraste · os módulos voltam ao centro</p>
+        <p class="compare-label good" style="margin-top:64px">Com o Kompass HUB:<br>Uma plataforma. Cinco módulos. Tudo conectado.</p>
       </div>
     </div>
 
@@ -1211,7 +1507,7 @@ body::after{
 </section>
 
 <!-- ============================ SOCIAL PROOF ============================ -->
-<section class="section social" id="social">
+<section class="section social section-enter section-fb" id="social">
   <div class="container">
     <div class="social-head reveal">
       <span class="eyebrow">Prova Social</span>
@@ -1241,7 +1537,7 @@ body::after{
 </section>
 
 <!-- ============================ FINAL CTA ============================ -->
-<section class="section final" id="final">
+<section class="section final section-enter section-fb" id="final">
   <div class="final-glow"></div>
   <div class="final-watermark" aria-hidden="true">
     <img src="assets/brand/mark-trans.png" alt="">
@@ -1461,7 +1757,113 @@ body::after{
     if('ResizeObserver' in window) new ResizeObserver(drawWeb).observe(stage);
   })();
 
-  /* ---------- ORBIT STAGE — módulos arrastáveis com snap de volta ---------- */
+  /* ---------- HERO PARTICLES — geração + animação contínua ---------- */
+  (function(){
+    var box=document.getElementById('heroParticles');if(!box)return;
+    var n=window.innerWidth<640?22:38;
+    for(var i=0;i<n;i++){
+      var p=document.createElement('span');
+      p.className='hero-particle';
+      p.style.left=(Math.random()*100)+'%';
+      p.style.setProperty('--dx',((Math.random()-.5)*120)+'px');
+      p.style.animationDuration=(14+Math.random()*12)+'s';
+      p.style.animationDelay=(-Math.random()*20)+'s';
+      p.style.width=p.style.height=(1+Math.random()*2.5)+'px';
+      box.appendChild(p);
+    }
+  })();
+
+  /* ---------- SECTION DEPTH — fallback IntersectionObserver pra browsers sem scroll-timeline ---------- */
+  (function(){
+    if(CSS && CSS.supports && CSS.supports('animation-timeline:view()')){
+      document.querySelectorAll('.section-fb').forEach(function(s){s.classList.remove('section-fb')});
+      return;
+    }
+    var secObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        e.target.classList.toggle('sec-in',e.isIntersecting && e.intersectionRatio>.18);
+      });
+    },{threshold:[0,.18,.5,.85,1]});
+    document.querySelectorAll('.section-fb').forEach(function(s){secObs.observe(s);});
+  })();
+
+  /* ---------- RADIAL ORBITAL TIMELINE — vanilla port do React component ---------- */
+  (function(){
+    var stage=document.getElementById('radialOrbital');if(!stage)return;
+    var nodes=Array.from(stage.querySelectorAll('.ro-node'));
+    var rotation=0,autoRotate=true,activeId=null;
+    var radius=180; // recalculado em resize
+    function recomputeRadius(){
+      var r=stage.getBoundingClientRect();
+      radius=Math.min(r.width,r.height)*.36;
+    }
+    function nodeById(id){return nodes.find(function(n){return n.dataset.id===String(id)})}
+    function update(){
+      nodes.forEach(function(n,i){
+        var angle=(i/nodes.length)*360+rotation;
+        var rad=(angle-90)*Math.PI/180;
+        var x=Math.cos(rad)*radius;
+        var y=Math.sin(rad)*radius;
+        var z=Math.round(100+50*Math.cos(rad));
+        var op;
+        if(activeId!==null){
+          op=(n.classList.contains('is-active')||n.classList.contains('is-related'))?1:.22;
+        }else{
+          op=Math.max(.55,.55+.45*((1+Math.sin(rad))/2));
+        }
+        n.style.transform='translate(-50%,-50%) translate('+x+'px,'+y+'px)';
+        n.style.zIndex=n.classList.contains('is-active')?500:z;
+        n.style.opacity=op;
+        n.style.filter=(activeId!==null && !n.classList.contains('is-active') && !n.classList.contains('is-related'))?'blur(2px)':'none';
+      });
+    }
+    recomputeRadius();
+    if('ResizeObserver' in window) new ResizeObserver(function(){recomputeRadius();update();}).observe(stage);
+    function tick(){
+      if(autoRotate)rotation=(rotation+.18)%360;
+      update();requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    function setActive(id){
+      activeId=id;
+      var active=id?nodeById(id):null;
+      var rel=active?active.dataset.related.split(','):[];
+      nodes.forEach(function(n){
+        n.classList.toggle('is-active',!!active && n.dataset.id===String(id));
+        n.classList.toggle('is-related',!!active && n.dataset.id!==String(id) && rel.indexOf(n.dataset.id)>-1);
+      });
+      if(id!==null){
+        autoRotate=false;
+        var idx=nodes.findIndex(function(n){return n.dataset.id===String(id)});
+        // queremos o nó ativo no TOPO (-90°) → angle final = -90°
+        // angle = (idx/total)*360 + rotation = -90  →  rotation = -90 - (idx/total)*360
+        rotation=-90-(idx/nodes.length)*360;
+        rotation=((rotation%360)+360)%360;
+      }else{
+        autoRotate=true;
+      }
+      update();
+    }
+    nodes.forEach(function(n){
+      n.addEventListener('click',function(e){
+        e.stopPropagation();
+        if(n.classList.contains('is-active'))setActive(null);
+        else setActive(parseInt(n.dataset.id));
+      });
+      n.querySelectorAll('.ro-related-btn').forEach(function(b){
+        b.addEventListener('click',function(e){
+          e.stopPropagation();
+          setActive(parseInt(b.dataset.target));
+        });
+      });
+    });
+    stage.addEventListener('click',function(e){
+      if(e.target===stage||e.target.classList.contains('ro-orbit-ring'))setActive(null);
+    });
+    update();
+  })();
+
+  /* ---------- ORBIT STAGE (legacy, escondido — mantido só pra fallback) ---------- */
   (function(){
     var stage=document.getElementById('orbitStage');if(!stage)return;
     var nodes=Array.from(stage.querySelectorAll('.orbit-node'));
