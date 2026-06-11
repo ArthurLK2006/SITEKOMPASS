@@ -1496,7 +1496,7 @@ body[data-path="tech"] #academy-landing { display: none !important; }
   position: absolute;
   transform: translate(-50%, -50%) scale(0.8);
   opacity: 0;
-  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
+  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out), border-color 300ms, box-shadow 300ms;
   background: rgba(14, 17, 32, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1507,14 +1507,77 @@ body[data-path="tech"] #academy-landing { display: none !important; }
   max-width: 150px;
   text-align: center;
   font-family: var(--font-ui);
+  pointer-events: auto;
 }
 .oc-stage.in-view .oc-card { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.oc-card:hover {
+  border-color: var(--gold-primary);
+  box-shadow: 0 8px 28px rgba(184,169,122,0.18);
+  transform: translate(-50%, -52%) scale(1.05);
+}
 .oc-c1 { left: 13.3%; top: 75%; transition-delay: 600ms; }
 .oc-c2 { left: 30%;   top: 75%; transition-delay: 900ms; }
 .oc-c3 { left: 70%;   top: 75%; transition-delay: 1200ms; }
 .oc-c4 { left: 86.7%; top: 75%; transition-delay: 1500ms; }
 .oc-card b { display: block; font-weight: 500; font-size: 12px; color: var(--white-pure); }
 .oc-card span { display: block; font-size: 10px; font-weight: 300; color: var(--text-muted); margin-top: 3px; }
+
+/* Mobile: fluxo vertical claro (WhatsApp → módulos em cascata) */
+.oc-wa-mobile { display: none; }
+@media (max-width: 768px) {
+  .oc-svg-wrap svg { display: none; }
+  .oc-wa-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .oc-wa-box {
+    width: 56px; height: 56px;
+    border: 1px solid #25D366;
+    border-radius: 14px;
+    background: rgba(37,211,102,0.05);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .oc-wa-label {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--gold-primary);
+    letter-spacing: 0.08em;
+  }
+  .oc-cards {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+  }
+  .oc-card {
+    position: static;
+    width: 100%;
+    max-width: 300px;
+    min-width: 0;
+    transform: translateY(14px) scale(1);
+    text-align: left;
+    padding: 14px 18px;
+    border-left: 3px solid var(--gold-primary);
+  }
+  .oc-card:hover { transform: translateY(14px) scale(1); }
+  .oc-stage.in-view .oc-card { transform: translateY(0) scale(1); }
+  /* conector vertical entre os cards */
+  .oc-card + .oc-card { margin-top: 28px; position: relative; }
+  .oc-card + .oc-card::before {
+    content: "";
+    position: absolute;
+    top: -28px; left: 50%;
+    width: 1px; height: 28px;
+    background: linear-gradient(180deg, transparent, var(--gold-primary));
+    opacity: 0.5;
+  }
+  .oc-card b { font-size: 13px; }
+  .oc-card span { font-size: 11px; }
+}
 
 .oc-badge-row { text-align: center; margin-top: 36px; }
 .oc-badge {
@@ -1623,6 +1686,12 @@ body[data-path="tech"] #academy-landing { display: none !important; }
   border-radius: 8px;
   padding: 28px 24px;
   text-align: center;
+  transition: transform 350ms var(--ease-out), box-shadow 350ms, border-top-color 350ms;
+}
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  border-top-color: var(--gold-light);
 }
 .stat-big {
   font-family: var(--font-display);
@@ -1675,7 +1744,8 @@ body[data-path="tech"] #academy-landing { display: none !important; }
   font-weight: 400;
   border-bottom: 1px solid var(--border-subtle);
 }
-.cmp-row { border-bottom: 1px solid var(--border-subtle); }
+.cmp-row { border-bottom: 1px solid var(--border-subtle); transition: background 250ms; }
+.cmp-row:hover { background: rgba(184,169,122,0.045); }
 .cmp-row:nth-child(odd) { background: rgba(255, 255, 255, 0.015); }
 .cmp-row:last-child { border-bottom: 2px solid var(--border-gold); }
 .cmp-feature {
@@ -3342,6 +3412,15 @@ body[data-path="tech"] #academy-landing { display: none !important; }
 
     <div class="oc-stage reveal">
       <div class="oc-svg-wrap">
+        <div class="oc-wa-mobile" aria-hidden="true">
+          <div class="oc-wa-box">
+            <svg width="28" height="28" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1.2C3.9 1.2 1.4 3.7 1.4 6.8C1.4 7.9 1.7 8.9 2.3 9.8L1.5 12.5L4.3 11.7C5.1 12.2 6 12.4 7 12.4C10.1 12.4 12.6 9.9 12.6 6.8C12.6 3.7 10.1 1.2 7 1.2Z" stroke="#B8A97A" stroke-width="0.8"/>
+              <path d="M5 4.8C5.2 4.8 5.5 4.8 5.6 5.2C5.8 5.6 6 6.1 6 6.2C6.1 6.4 5.8 6.7 5.6 6.9C5.9 7.5 6.6 8.2 7.3 8.5C7.5 8.2 7.7 8 7.9 8C8.1 8.1 8.7 8.4 8.9 8.5C9.1 8.6 9.1 9.1 8.8 9.4C8.5 9.7 7.7 9.8 6.6 9.2C5.5 8.6 4.8 7.5 4.6 7C4.4 6.5 4.5 5.3 5 4.8Z" fill="#B8A97A"/>
+            </svg>
+          </div>
+          <span class="oc-wa-label">WhatsApp</span>
+        </div>
         <svg viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <path id="oc-path-main" d="M300,120 L300,180"/>
