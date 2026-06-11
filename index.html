@@ -147,7 +147,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
 }
 
 /* ============================================================
-   SECTION 0 — GATEWAY
+   SECTION 0 — GATEWAY (tela cheia, escolha obrigatória)
    ============================================================ */
 #gateway {
   position: fixed;
@@ -155,122 +155,205 @@ button { font-family: var(--font-ui); cursor: pointer; }
   z-index: 9000;
   background: var(--bg-primary);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 48px;
-  padding: 32px 24px;
-  overflow-y: auto;
+  flex-direction: row;
   opacity: 0;
-  animation: gatewayFadeIn 600ms var(--ease-out) 200ms forwards;
+  animation: gatewayFadeIn 800ms var(--ease-out) 150ms forwards;
 }
 @keyframes gatewayFadeIn { to { opacity: 1; } }
 
-.gateway-logo { transform: scale(1.4); }
+.gw-half {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 48px 6%;
+  cursor: pointer;
+  overflow: hidden;
+  transition: flex 800ms var(--ease-out);
+}
+.gw-half:hover, .gw-half:focus-visible { flex: 1.5; }
 
-.gateway-eyebrow {
+#gw-tech { background: linear-gradient(135deg, #10142A 0%, #0E1120 60%, #0B0E1A 100%); }
+#gw-academy { background: linear-gradient(225deg, #161B30 0%, #11152A 55%, #0E1120 100%); }
+
+/* aura dinâmica de cada lado */
+.gw-half::before {
+  content: "";
+  position: absolute;
+  width: 70vmax; height: 70vmax;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 800ms, transform 1200ms var(--ease-out);
+}
+#gw-tech::before {
+  top: -30%; left: -20%;
+  background: radial-gradient(circle, rgba(37,99,235,0.14) 0%, transparent 60%);
+}
+#gw-academy::before {
+  bottom: -30%; right: -20%;
+  background: radial-gradient(circle, rgba(184,169,122,0.16) 0%, transparent 60%);
+}
+.gw-half:hover::before { opacity: 1; transform: scale(1.15); }
+
+/* anéis decorativos giratórios */
+.gw-rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 800ms;
+}
+.gw-half:hover .gw-rings { opacity: 0.7; }
+.gw-rings circle { transform-origin: center; }
+.gw-rings .r1 { animation: rotateRing 90s linear infinite; }
+.gw-rings .r2 { animation: rotateRing 140s linear infinite reverse; }
+
+.gw-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 420px;
+  transform: translateY(0);
+  transition: transform 700ms var(--ease-out);
+}
+.gw-half:hover .gw-content { transform: translateY(-8px); }
+
+.gw-badge {
   font-family: var(--font-ui);
   font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.3em;
   color: var(--gold-primary);
+  border: 1px solid var(--border-gold);
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 28px;
 }
 
-.gateway-headline {
+.gw-title {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 48px;
+  font-size: clamp(40px, 4.6vw, 64px);
+  line-height: 1.0;
   color: var(--white-pure);
-  text-align: center;
-  line-height: 1.1;
+  margin-bottom: 18px;
+}
+.gw-title em { font-style: italic; color: var(--gold-light); }
+
+.gw-body {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--white-soft);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  opacity: 0.85;
 }
 
-.gateway-cards {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-  align-items: stretch;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.gateway-card {
-  width: 360px;
-  padding: 36px;
-  background: rgba(37, 42, 61, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.gw-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--gold-primary);
   border: 1px solid var(--border-gold);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 400ms var(--ease-out);
-  text-align: left;
+  padding: 14px 30px;
+  border-radius: 30px;
+  transition: all 350ms var(--ease-out);
 }
-#card-academy { background: rgba(30, 34, 53, 0.85); }
-.gateway-card:hover {
-  transform: translateY(-6px);
+.gw-cta .gw-arrow { transition: transform 350ms var(--ease-out); }
+.gw-half:hover .gw-cta {
+  background: var(--gold-primary);
+  color: var(--bg-primary);
   border-color: var(--gold-primary);
-  box-shadow: 0 0 24px var(--gold-glow);
+  box-shadow: 0 8px 32px rgba(184,169,122,0.25);
 }
+.gw-half:hover .gw-cta .gw-arrow { transform: translateX(5px); }
 
-.gateway-icon { display: block; margin-bottom: 20px; }
-
-.gateway-badge {
-  display: inline-block;
+.gw-soon {
+  margin-top: 16px;
   font-family: var(--font-ui);
   font-weight: 400;
   font-size: 10px;
   letter-spacing: 0.25em;
-  color: var(--gold-primary);
-  border: 1px solid var(--border-gold);
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin-bottom: 16px;
-}
-
-.gateway-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 28px;
-  color: var(--white-pure);
-  margin-bottom: 12px;
-}
-
-.gateway-body {
-  font-family: var(--font-ui);
-  font-weight: 300;
-  font-size: 15px;
-  color: var(--white-soft);
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-
-.gateway-cta {
-  display: inline-block;
-  font-family: var(--font-ui);
-  font-weight: 400;
-  font-size: 14px;
-  color: var(--gold-primary);
-  border: 1px solid var(--border-gold);
-  padding: 10px 20px;
-  border-radius: 24px;
-  transition: all 300ms;
-}
-.gateway-card:hover .gateway-cta {
-  background: var(--gold-primary);
-  color: var(--bg-primary);
-  border-color: var(--gold-primary);
-}
-
-.gateway-skip {
-  font-family: var(--font-ui);
-  font-weight: 300;
-  font-size: 12px;
   color: var(--text-muted);
-  margin-top: 8px;
-  text-align: center;
 }
+
+/* divisor central */
+.gw-divider {
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  z-index: 3;
+  background: linear-gradient(180deg, transparent, var(--border-gold) 20%, var(--gold-primary) 50%, var(--border-gold) 80%, transparent);
+  pointer-events: none;
+}
+
+/* marca no topo, sobre as duas metades */
+.gw-brand {
+  position: absolute;
+  top: 40px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.gw-brand img { width: 92px; height: auto; object-fit: contain; filter: drop-shadow(0 4px 16px rgba(184,169,122,0.3)); }
+.gw-brand-line {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.gw-hint {
+  position: absolute;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--text-ghost);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* logo real (imagem da marca) */
+.logo-img { width: 34px; height: 34px; object-fit: contain; }
+
+/* ============================================================
+   AMBIENTES SEPARADOS — Tech × Academy
+   ============================================================ */
+body[data-path="academy"] #hero,
+body[data-path="academy"] #trust,
+body[data-path="academy"] #how-it-works,
+body[data-path="academy"] #ecosystem,
+body[data-path="academy"] #product-preview,
+body[data-path="academy"] #one-click,
+body[data-path="academy"] #differentials,
+body[data-path="academy"] #comparison,
+body[data-path="academy"] #academy-teaser,
+body[data-path="academy"] #social,
+body[data-path="academy"] #final { display: none !important; }
+body[data-path="academy"] #academy-landing { display: block !important; }
+body[data-path="tech"] #academy-landing { display: none !important; }
 
 /* ============================================================
    SECTION 1 — NAV
@@ -588,29 +671,43 @@ button { font-family: var(--font-ui); cursor: pointer; }
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-gold);
   border-bottom: 1px solid var(--border-gold);
-  padding: 18px 0;
+  padding: 26px 0;
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 }
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marqueeScroll 50s linear infinite;
+  animation: marqueeScroll 60s linear infinite;
 }
+#trust:hover .marquee-track { animation-play-state: paused; }
 .marquee-content {
   display: flex;
-  align-items: center;
-  gap: 32px;
-  padding-right: 32px;
+  align-items: baseline;
+  gap: 56px;
+  padding-right: 56px;
   white-space: nowrap;
 }
 .marquee-content span {
-  font-family: var(--font-ui);
-  font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 19px;
+  letter-spacing: 0.04em;
+  color: var(--white-soft);
+  opacity: 0.75;
+  transition: opacity 300ms, color 300ms;
 }
-.marquee-content .m-dot { color: var(--gold-primary); }
+.marquee-content span:hover { opacity: 1; color: var(--gold-light); }
+.marquee-content .m-dot {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 9px;
+  color: var(--gold-primary);
+  opacity: 1;
+  align-self: center;
+}
 @keyframes marqueeScroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -724,22 +821,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
 }
 .academy-bottom a:hover { color: var(--gold-light); }
 
-.academy-divider {
-  height: 80px;
-  margin: 0 -5.3%;
-  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.academy-divider span {
-  font-family: var(--font-ui);
-  font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  color: var(--text-ghost);
-  text-align: center;
-}
+#academy-landing { padding-bottom: 40px; }
 
 /* ============================================================
    SESSÃO 2 — TOKENS ADICIONAIS
@@ -2081,10 +2163,23 @@ button { font-family: var(--font-ui); cursor: pointer; }
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .nav-burger { display: flex; }
-  #gateway { gap: 28px; justify-content: flex-start; padding-top: 56px; }
-  .gateway-headline { font-size: 32px; }
-  .gateway-cards { flex-direction: column; width: 100%; align-items: center; }
-  .gateway-card { width: 100%; max-width: 360px; padding: 28px; }
+  #gateway { flex-direction: column; }
+  .gw-divider {
+    left: 0; right: 0; top: 50%; bottom: auto;
+    width: auto; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  }
+  .gw-half { padding: 20px 8%; }
+  .gw-half:hover { flex: 1.2; }
+  .gw-brand { top: 14px; }
+  .gw-brand img { width: 64px; }
+  .gw-brand-line { font-size: 8px; letter-spacing: 0.25em; }
+  .gw-title { font-size: 32px; margin-bottom: 12px; }
+  .gw-body { font-size: 13px; margin-bottom: 20px; }
+  .gw-badge { margin-bottom: 14px; padding: 4px 12px; }
+  .gw-cta { padding: 11px 22px; font-size: 12px; }
+  .gw-soon { margin-top: 10px; }
+  .gw-hint { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -2219,47 +2314,41 @@ button { font-family: var(--font-ui); cursor: pointer; }
      SECTION 0 — GATEWAY
      ============================================================ -->
 <section id="gateway" aria-label="Escolha seu caminho">
-  <div class="logo gateway-logo">
-    <img src="assets/brand/mark-crop.png" width="42" height="22" alt="" style="display:block">
-
-    <span class="logo-text">
-      <span class="logo-kompass">kompass</span><span class="logo-hub">Hub</span>
-    </span>
+  <div class="gw-brand">
+    <img src="assets/brand/mark-crop.png" alt="Kompass HUB">
+    <span class="gw-brand-line">KOMPASS HUB &middot; LEGAL &middot; TECH &middot; ACADEMY</span>
   </div>
 
-  <p class="gateway-eyebrow">Legal &middot; Tech &middot; Academy</p>
-
-  <h1 class="gateway-headline">Qual caminho &eacute; o seu?</h1>
-
-  <div class="gateway-cards">
-    <div class="gateway-card" id="card-tech" role="button" tabindex="0" aria-label="Explorar o Kompass Tech">
-      <svg class="gateway-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="20" r="7" stroke="#B8A97A" stroke-width="1.5"/>
-        <circle cx="7" cy="9" r="3.5" stroke="#B8A97A" stroke-width="1.5"/>
-        <circle cx="33" cy="31" r="3.5" stroke="#B8A97A" stroke-width="1.5"/>
-        <line x1="10" y1="11.5" x2="14.8" y2="15.5" stroke="#B8A97A" stroke-width="1.2"/>
-        <line x1="25.2" y1="24.5" x2="30" y2="28.5" stroke="#B8A97A" stroke-width="1.2"/>
-      </svg>
-      <span class="gateway-badge">SOFTWARE</span>
-      <h2 class="gateway-title">Kompass Tech</h2>
-      <p class="gateway-body">Plataforma All-in-One para sua opera&ccedil;&atilde;o. CRM, Jur&iacute;dico, Financeiro e RH com WhatsApp nativo.</p>
-      <span class="gateway-cta">Explorar o Software &rarr;</span>
-    </div>
-
-    <div class="gateway-card" id="card-academy" role="button" tabindex="0" aria-label="Explorar a Kompass Academy">
-      <svg class="gateway-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
-        <polygon points="20,8 36,15 20,22 4,15" stroke="#B8A97A" stroke-width="1.5" fill="none"/>
-        <path d="M11 18.5V26C11 26 14.5 29.5 20 29.5C25.5 29.5 29 26 29 26V18.5" stroke="#B8A97A" stroke-width="1.5" fill="none"/>
-        <line x1="36" y1="15" x2="36" y2="24" stroke="#B8A97A" stroke-width="1.5"/>
-      </svg>
-      <span class="gateway-badge">ACADEMY</span>
-      <h2 class="gateway-title">Kompass Academy</h2>
-      <p class="gateway-body">MBAs, cursos e trilhas para l&iacute;deres jur&iacute;dicos e de opera&ccedil;&otilde;es. Certifica&ccedil;&atilde;o e alta performance.</p>
-      <span class="gateway-cta">Explorar a Academy &rarr;</span>
+  <div class="gw-half" id="card-tech" role="button" tabindex="0" aria-label="Entrar no ambiente Kompass Tech">
+    <svg class="gw-rings" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <circle class="r1" cx="400" cy="400" r="330" fill="none" stroke="#2563EB" stroke-width="1" stroke-dasharray="6 10" opacity="0.25"/>
+      <circle class="r2" cx="400" cy="400" r="240" fill="none" stroke="#B8A97A" stroke-width="1" stroke-dasharray="2 8" opacity="0.3"/>
+    </svg>
+    <div class="gw-content">
+      <span class="gw-badge">SOFTWARE</span>
+      <h1 class="gw-title">Kompass <em>Tech</em></h1>
+      <p class="gw-body">A plataforma All-in-One que une CRM, Comercial, Capta&ccedil;&atilde;o, Jur&iacute;dico, Financeiro e Pessoas &mdash; com WhatsApp nativo.</p>
+      <span class="gw-cta">Entrar no ambiente Tech <span class="gw-arrow">&rarr;</span></span>
     </div>
   </div>
 
-  <p class="gateway-skip">Ou role para baixo para conhecer o ecossistema completo &darr;</p>
+  <span class="gw-divider" aria-hidden="true"></span>
+
+  <div class="gw-half" id="card-academy" role="button" tabindex="0" aria-label="Entrar no ambiente Kompass Academy">
+    <svg class="gw-rings" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <circle class="r1" cx="400" cy="400" r="330" fill="none" stroke="#B8A97A" stroke-width="1" stroke-dasharray="6 10" opacity="0.3"/>
+      <circle class="r2" cx="400" cy="400" r="240" fill="none" stroke="#D4C89A" stroke-width="1" stroke-dasharray="2 8" opacity="0.25"/>
+    </svg>
+    <div class="gw-content">
+      <span class="gw-badge">EDUCA&Ccedil;&Atilde;O</span>
+      <h1 class="gw-title">Kompass <em>Academy</em></h1>
+      <p class="gw-body">MBA e cursos para l&iacute;deres jur&iacute;dicos e de opera&ccedil;&otilde;es. Forma&ccedil;&atilde;o de alta performance, em breve.</p>
+      <span class="gw-cta">Entrar no ambiente Academy <span class="gw-arrow">&rarr;</span></span>
+      <span class="gw-soon">MBA E CURSOS &middot; EM BREVE</span>
+    </div>
+  </div>
+
+  <p class="gw-hint">ESCOLHA UM CAMINHO PARA CONTINUAR</p>
 </section>
 
 <div id="main-content">
@@ -2270,7 +2359,6 @@ button { font-family: var(--font-ui); cursor: pointer; }
   <header id="nav">
     <a href="#hero" class="logo" aria-label="Kompass HUB — in&iacute;cio">
       <img src="assets/brand/mark-crop.png" width="42" height="22" alt="" style="display:block">
-
       <span class="logo-text">
         <span class="logo-kompass">kompass</span><span class="logo-hub">Hub</span>
       </span>
@@ -2305,12 +2393,12 @@ button { font-family: var(--font-ui); cursor: pointer; }
        ============================================================ -->
   <section id="academy-landing">
     <div class="academy-inner">
-      <p class="academy-eyebrow">FORMA&Ccedil;&Atilde;O PARA L&Iacute;DERES JUR&Iacute;DICOS</p>
+      <p class="academy-eyebrow">KOMPASS ACADEMY &middot; MBA E CURSOS &middot; EM BREVE</p>
       <h1 class="academy-h1">Domine o direito.<br>Lidere a opera&ccedil;&atilde;o.</h1>
-      <p class="academy-sub">MBAs, trilhas e playbooks para advogados e gestores que querem operar no mais alto n&iacute;vel.</p>
+      <p class="academy-sub">MBA e cursos para advogados e gestores que querem operar no mais alto n&iacute;vel. A vertente educacional do ecossistema Kompass &mdash; independente do software.</p>
       <div class="academy-ctas">
-        <a class="btn-gold" href="#academy-cursos">Ver Cursos Dispon&iacute;veis</a>
-        <a class="btn-outline" href="#hero">Conhecer o Software &rarr;</a>
+        <a class="btn-gold" href="#academy-cursos">Ver o que vem por a&iacute;</a>
+        <a class="btn-outline to-tech" href="#hero">Conhecer o Software &rarr;</a>
       </div>
 
       <div class="academy-grid" id="academy-cursos">
@@ -2323,7 +2411,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
             <line x1="12" y1="21" x2="20" y2="21" stroke="#B8A97A" stroke-width="1.2"/>
           </svg>
           <h3 class="academy-card-title">MBA em Gest&atilde;o Jur&iacute;dica Estrat&eacute;gica</h3>
-          <p class="academy-card-sub">24 meses &middot; Certifica&ccedil;&atilde;o reconhecida &middot; Online</p>
+          <p class="academy-card-sub">Em breve &middot; Certifica&ccedil;&atilde;o reconhecida &middot; Online</p>
         </div>
         <div class="academy-card">
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -2333,7 +2421,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
             <rect x="33" y="31" width="5" height="5" rx="1" transform="rotate(45 35.5 33.5)" stroke="#B8A97A" stroke-width="1.2"/>
           </svg>
           <h3 class="academy-card-title">Trilha de LegalTech</h3>
-          <p class="academy-card-sub">8 semanas &middot; Pr&aacute;tico &middot; Ferramentas reais</p>
+          <p class="academy-card-sub">Em breve &middot; Pr&aacute;tico &middot; Ferramentas reais</p>
         </div>
         <div class="academy-card">
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -2341,18 +2429,14 @@ button { font-family: var(--font-ui); cursor: pointer; }
             <line x1="20" y1="12" x2="20" y2="32" stroke="#B8A97A" stroke-width="1.2"/>
           </svg>
           <h3 class="academy-card-title">Playbooks de Alta Performance</h3>
-          <p class="academy-card-sub">Acesso imediato &middot; Atualizado continuamente</p>
+          <p class="academy-card-sub">Em breve &middot; Atualizado continuamente</p>
         </div>
       </div>
 
       <div class="academy-bottom">
-        <p>Quer o software tamb&eacute;m?</p>
-        <a href="#hero">Conhe&ccedil;a o Kompass Tech &rarr;</a>
+        <p>Procurando a plataforma para o seu escrit&oacute;rio?</p>
+        <a class="to-tech" href="#hero">Conhe&ccedil;a o Kompass Tech &rarr;</a>
       </div>
-    </div>
-
-    <div class="academy-divider">
-      <span>&#9660;&nbsp;&nbsp;KOMPASS TECH &mdash; O SOFTWARE</span>
     </div>
   </section>
 
@@ -2371,7 +2455,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
 
       <div class="hero-rule anim-ready" data-delay="1000"></div>
 
-      <p class="hero-sub anim-ready" data-delay="1200">CRM, Jur&iacute;dico, Financeiro e RH unidos em uma &uacute;nica plataforma. WhatsApp nativo. Tudo resolvido com um clique.</p>
+      <p class="hero-sub anim-ready" data-delay="1200">CRM, Comercial, Capta&ccedil;&atilde;o, An&aacute;lise, Pessoas, Jur&iacute;dico e Financeiro &mdash; unidos em uma &uacute;nica plataforma. WhatsApp nativo. Tudo resolvido com um clique.</p>
 
       <div class="hero-ctas">
         <button class="btn-gold magnetic anim-ready open-demo" data-delay="1400" type="button">Agendar Demonstra&ccedil;&atilde;o Gratuita</button>
@@ -2402,7 +2486,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
           <line x1="240" y1="292" x2="240" y2="390" stroke="#B8A97A" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
           <line x1="188" y1="240" x2="100" y2="240" stroke="#B8A97A" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
 
-          <!-- Center hub -->
+          <!-- Center hub — marca real -->
           <circle cx="240" cy="240" r="52" fill="#0E1120" stroke="#B8A97A" stroke-width="2"/>
           <image class="hub-mark" href="assets/brand/mark-crop.png" x="203" y="221" width="74" height="38"/>
 
@@ -2463,18 +2547,16 @@ button { font-family: var(--font-ui); cursor: pointer; }
             <path d="M11.2 6.6C11.2 6.6 10.4 5.7 9 5.7C7.6 5.7 6.9 6.4 6.9 7.3C6.9 9.5 11.3 8.4 11.3 10.6C11.3 11.6 10.4 12.3 9 12.3C7.5 12.3 6.7 11.3 6.7 11.3" stroke="#B8A97A" stroke-width="1.1" fill="none"/>
             <line x1="9" y1="4.2" x2="9" y2="13.8" stroke="#B8A97A" stroke-width="1.1"/>
           </svg>
-          <div class="orb-title">Financeiro &amp; RH</div>
-          <div class="orb-sub">Caixa &middot; Pagamentos &middot; Equipe</div>
+          <div class="orb-title">Financeiro &amp; Pessoas</div>
+          <div class="orb-sub">Contratos &middot; Comiss&otilde;es &middot; Equipe</div>
         </div>
 
         <div class="orb-card orb-left">
           <svg class="orb-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <polygon points="9,3 17,6.5 9,10 1,6.5" stroke="#B8A97A" stroke-width="1.1" fill="none"/>
-            <path d="M4.5 8.2V12C4.5 12 6.3 14 9 14C11.7 14 13.5 12 13.5 12V8.2" stroke="#B8A97A" stroke-width="1.1" fill="none"/>
-            <line x1="17" y1="6.5" x2="17" y2="11" stroke="#B8A97A" stroke-width="1.1"/>
+            <path d="M2 3H16L10.5 9.5V14L7.5 16V9.5L2 3Z" stroke="#B8A97A" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
           </svg>
-          <div class="orb-title">Academy</div>
-          <div class="orb-sub">Forma&ccedil;&atilde;o &middot; Maestria</div>
+          <div class="orb-title">Capta&ccedil;&atilde;o &amp; An&aacute;lise</div>
+          <div class="orb-sub">Automa&ccedil;&otilde;es &middot; Relat&oacute;rios</div>
         </div>
       </div>
     </div>
@@ -2512,26 +2594,26 @@ button { font-family: var(--font-ui); cursor: pointer; }
   <section id="trust" aria-label="Recursos da plataforma">
     <div class="marquee-track">
       <div class="marquee-content">
-        <span>CRM INTEGRADO</span><span class="m-dot">&middot;</span>
-        <span>WHATSAPP NATIVO</span><span class="m-dot">&middot;</span>
-        <span>LEGAL OPS</span><span class="m-dot">&middot;</span>
-        <span>GEST&Atilde;O FINANCEIRA</span><span class="m-dot">&middot;</span>
-        <span>RH &amp; ORGANOGRAMA</span><span class="m-dot">&middot;</span>
-        <span>BI EM TEMPO REAL</span><span class="m-dot">&middot;</span>
-        <span>AUTOMA&Ccedil;&Otilde;ES</span><span class="m-dot">&middot;</span>
-        <span>ACADEMY</span><span class="m-dot">&middot;</span>
-        <span>ALL-IN-ONE</span><span class="m-dot">&middot;</span>
+        <span>CRM &amp; Pipeline</span><span class="m-dot">&#9670;</span>
+        <span>WhatsApp nativo</span><span class="m-dot">&#9670;</span>
+        <span>Operacional Jur&iacute;dico</span><span class="m-dot">&#9670;</span>
+        <span>Propostas &amp; Assinaturas</span><span class="m-dot">&#9670;</span>
+        <span>Capta&ccedil;&atilde;o &amp; Automa&ccedil;&otilde;es</span><span class="m-dot">&#9670;</span>
+        <span>An&aacute;lise em tempo real</span><span class="m-dot">&#9670;</span>
+        <span>Gest&atilde;o de Pessoas</span><span class="m-dot">&#9670;</span>
+        <span>Financeiro completo</span><span class="m-dot">&#9670;</span>
+        <span>All-in-One</span><span class="m-dot">&#9670;</span>
       </div>
       <div class="marquee-content" aria-hidden="true">
-        <span>CRM INTEGRADO</span><span class="m-dot">&middot;</span>
-        <span>WHATSAPP NATIVO</span><span class="m-dot">&middot;</span>
-        <span>LEGAL OPS</span><span class="m-dot">&middot;</span>
-        <span>GEST&Atilde;O FINANCEIRA</span><span class="m-dot">&middot;</span>
-        <span>RH &amp; ORGANOGRAMA</span><span class="m-dot">&middot;</span>
-        <span>BI EM TEMPO REAL</span><span class="m-dot">&middot;</span>
-        <span>AUTOMA&Ccedil;&Otilde;ES</span><span class="m-dot">&middot;</span>
-        <span>ACADEMY</span><span class="m-dot">&middot;</span>
-        <span>ALL-IN-ONE</span><span class="m-dot">&middot;</span>
+        <span>CRM &amp; Pipeline</span><span class="m-dot">&#9670;</span>
+        <span>WhatsApp nativo</span><span class="m-dot">&#9670;</span>
+        <span>Operacional Jur&iacute;dico</span><span class="m-dot">&#9670;</span>
+        <span>Propostas &amp; Assinaturas</span><span class="m-dot">&#9670;</span>
+        <span>Capta&ccedil;&atilde;o &amp; Automa&ccedil;&otilde;es</span><span class="m-dot">&#9670;</span>
+        <span>An&aacute;lise em tempo real</span><span class="m-dot">&#9670;</span>
+        <span>Gest&atilde;o de Pessoas</span><span class="m-dot">&#9670;</span>
+        <span>Financeiro completo</span><span class="m-dot">&#9670;</span>
+        <span>All-in-One</span><span class="m-dot">&#9670;</span>
       </div>
     </div>
   </section>
@@ -2563,7 +2645,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
           <path d="M31 27.5C36.5 27.5 41 31.5 41 37" stroke="#B8A97A" stroke-width="1.5" fill="none"/>
         </svg>
         <h3 class="how-title">Onboarding da equipe</h3>
-        <p class="how-body">Trilhas do Kompass Academy garantem que cada colaborador domine sua &aacute;rea em dias, n&atilde;o meses.</p>
+        <p class="how-body">Treinamento guiado e materiais pr&aacute;ticos garantem que cada colaborador domine sua &aacute;rea em dias, n&atilde;o meses.</p>
       </div>
 
       <div class="how-step reveal reveal-up stagger-3">
@@ -2586,16 +2668,18 @@ button { font-family: var(--font-ui); cursor: pointer; }
        ============================================================ -->
   <section id="ecosystem">
     <p class="sec-eyebrow reveal reveal-up">O ECOSSISTEMA</p>
-    <h2 class="sec-h2 reveal reveal-up">Uma plataforma.<br>Cinco pilares.</h2>
-    <p class="eco-sub reveal reveal-up">Zero atrito. Tudo o que sua opera&ccedil;&atilde;o precisa, nativamente conectado.</p>
+    <h2 class="sec-h2 reveal reveal-up">Uma plataforma.<br>Sete m&oacute;dulos.</h2>
+    <p class="eco-sub reveal reveal-up">WhatsApp, Chat, Tarefas e Conte&uacute;do no menu global. Sete m&oacute;dulos profundos, nativamente conectados.</p>
 
     <div class="eco-layout reveal reveal-up">
       <div class="eco-tabs" role="tablist" aria-label="M&oacute;dulos do ecossistema">
-        <button class="tab-btn active" type="button" role="tab"><span class="tab-num">01</span>CRM &amp; Comercial</button>
-        <button class="tab-btn" type="button" role="tab"><span class="tab-num">02</span>Capta&ccedil;&atilde;o &amp; Growth</button>
-        <button class="tab-btn" type="button" role="tab"><span class="tab-num">03</span>Operacional Jur&iacute;dico</button>
-        <button class="tab-btn" type="button" role="tab"><span class="tab-num">04</span>Financeiro &amp; RH</button>
-        <button class="tab-btn" type="button" role="tab"><span class="tab-num">05</span>Academy</button>
+        <button class="tab-btn active" type="button" role="tab"><span class="tab-num">01</span>CRM</button>
+        <button class="tab-btn" type="button" role="tab"><span class="tab-num">02</span>Comercial</button>
+        <button class="tab-btn" type="button" role="tab"><span class="tab-num">03</span>Capta&ccedil;&atilde;o</button>
+        <button class="tab-btn" type="button" role="tab"><span class="tab-num">04</span>An&aacute;lise</button>
+        <button class="tab-btn" type="button" role="tab"><span class="tab-num">05</span>Pessoas</button>
+        <button class="tab-btn" type="button" role="tab"><span class="tab-num">06</span>Operacional Jur&iacute;dico</button>
+        <button class="tab-btn" type="button" role="tab"><span class="tab-num">07</span>Financeiro</button>
       </div>
 
       <div class="eco-panels">
@@ -2603,12 +2687,12 @@ button { font-family: var(--font-ui); cursor: pointer; }
         <div class="tab-panel active" role="tabpanel">
           <div>
             <span class="panel-num">01</span>
-            <h3 class="panel-h3">Venda mais. Sem perder nenhum dado.</h3>
-            <p class="panel-p">Pipeline visual, propostas, assinaturas e WhatsApp operando nativamente no CRM. Cada conversa vira oportunidade rastreada.</p>
+            <h3 class="panel-h3">Relacionamento completo. Nenhum dado perdido.</h3>
+            <p class="panel-p">Dashboard, Pipeline CRM e base de clientes com WhatsApp operando nativamente. Cada conversa vira oportunidade rastreada.</p>
             <ul class="panel-bullets">
-              <li>Pipeline com WhatsApp nativo integrado</li>
-              <li>Propostas, assinaturas e controle de horas</li>
-              <li>Cat&aacute;logo de servi&ccedil;os e gest&atilde;o de clientes</li>
+              <li>Dashboard e Pipeline CRM com funil visual</li>
+              <li>Clientes, Rascunhos e Agenda com notifica&ccedil;&otilde;es</li>
+              <li>Controle de Horas (Timesheet) integrado</li>
             </ul>
           </div>
           <div class="mockup tilt-card">
@@ -2635,16 +2719,37 @@ button { font-family: var(--font-ui); cursor: pointer; }
           </div>
         </div>
 
-        <!-- TAB 2 -->
+        <!-- TAB 2 — COMERCIAL -->
         <div class="tab-panel" role="tabpanel">
           <div>
             <span class="panel-num">02</span>
-            <h3 class="panel-h3">Prospec&ccedil;&atilde;o automatizada. Previsibilidade garantida.</h3>
-            <p class="panel-p">Cad&ecirc;ncias, automa&ccedil;&otilde;es e dashboards de convers&atilde;o em tempo real. Sua equipe fecha mais sem trabalhar mais.</p>
+            <h3 class="panel-h3">Da proposta &agrave; assinatura. Sem sair da tela.</h3>
+            <p class="panel-p">Propostas profissionais, documentos e assinaturas eletr&ocirc;nicas conectados ao seu cat&aacute;logo de servi&ccedil;os.</p>
             <ul class="panel-bullets">
-              <li>Automa&ccedil;&otilde;es e cad&ecirc;ncias de prospec&ccedil;&atilde;o</li>
-              <li>Email marketing e formul&aacute;rios inteligentes</li>
-              <li>Dashboards de vendas em tempo real</li>
+              <li>Propostas com acompanhamento de visualiza&ccedil;&atilde;o</li>
+              <li>Documentos e Assinaturas eletr&ocirc;nicas</li>
+              <li>Servi&ccedil;os (cat&aacute;logo) padronizados</li>
+            </ul>
+          </div>
+          <div class="mockup tilt-card">
+            <span class="dl-badge">15 propostas &middot; R$294.788 em pipeline</span>
+            <div class="dl-row"><span class="dl-date">#06006</span><span class="dl-name">Proposta de Honor&aacute;rios</span><span class="dl-due due-soon">Visualizada</span></div>
+            <div class="dl-row"><span class="dl-date">#06005</span><span class="dl-name">Planejamento Tribut&aacute;rio</span><span class="dl-due due-soon">Visualizada</span></div>
+            <div class="dl-row"><span class="dl-date">#05010</span><span class="dl-name">Presta&ccedil;&atilde;o de Servi&ccedil;os</span><span class="dl-due">Aprovada &#10003;</span></div>
+            <div class="dl-row"><span class="dl-date">#05009</span><span class="dl-name">Consultoria Empresarial</span><span class="dl-due">Assinada &#10003;</span></div>
+          </div>
+        </div>
+
+        <!-- TAB 3 — CAPTAÇÃO -->
+        <div class="tab-panel" role="tabpanel">
+          <div>
+            <span class="panel-num">03</span>
+            <h3 class="panel-h3">Prospec&ccedil;&atilde;o automatizada. Previsibilidade garantida.</h3>
+            <p class="panel-p">Formul&aacute;rios, cad&ecirc;ncias e automa&ccedil;&otilde;es com gatilhos de marketing. Sua equipe fecha mais sem trabalhar mais.</p>
+            <ul class="panel-bullets">
+              <li>Formul&aacute;rios de Capta&ccedil;&atilde;o e Agendamento de triagens</li>
+              <li>Cad&ecirc;ncias, Email Marketing e Automa&ccedil;&otilde;es</li>
+              <li>Playbooks de prospec&ccedil;&atilde;o prontos para usar</li>
             </ul>
           </div>
           <div class="mockup tilt-card">
@@ -2669,16 +2774,59 @@ button { font-family: var(--font-ui); cursor: pointer; }
           </div>
         </div>
 
-        <!-- TAB 3 -->
+        <!-- TAB 4 — ANÁLISE -->
         <div class="tab-panel" role="tabpanel">
           <div>
-            <span class="panel-num">03</span>
-            <h3 class="panel-h3">N&uacute;cleo jur&iacute;dico completo. Na mesma tela.</h3>
-            <p class="panel-p">Prazos, audi&ecirc;ncias, POPs, calculadora jur&iacute;dica e diret&oacute;rios. Sua opera&ccedil;&atilde;o legal sem gargalos, sem planilhas.</p>
+            <span class="panel-num">04</span>
+            <h3 class="panel-h3">Cada decis&atilde;o sustentada por dados.</h3>
+            <p class="panel-p">Relat&oacute;rios, NPS, execu&ccedil;&otilde;es e dashboards comerciais, operacionais e de sistema. Inclusive um montador de relat&oacute;rios personalizado.</p>
             <ul class="panel-bullets">
-              <li>Gest&atilde;o de processos, audi&ecirc;ncias e prazos</li>
-              <li>Modelos de peti&ccedil;&atilde;o e POPs operacionais</li>
-              <li>Calculadora jur&iacute;dica e diret&oacute;rios integrados</li>
+              <li>Comercial: Pipeline &amp; Vendas, Origens &amp; Convers&atilde;o, Metas</li>
+              <li>Operacional: Clientes, Tarefas, Equipe, WhatsApp</li>
+              <li>Personalizado: montador de relat&oacute;rios sob medida</li>
+            </ul>
+          </div>
+          <div class="mockup tilt-card">
+            <div class="bars">
+              <i style="height:40%"></i><i style="height:60%"></i><i style="height:50%"></i><i style="height:80%"></i><i style="height:100%"></i>
+            </div>
+            <div class="bars-labels"><span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span></div>
+          </div>
+        </div>
+
+        <!-- TAB 5 — PESSOAS -->
+        <div class="tab-panel" role="tabpanel">
+          <div>
+            <span class="panel-num">05</span>
+            <h3 class="panel-h3">Equipe, cultura e carreira. No mesmo lugar.</h3>
+            <p class="panel-p">Organograma, comunica&ccedil;&atilde;o interna e gest&atilde;o de carreira. Do onboarding &agrave; pesquisa de clima.</p>
+            <ul class="panel-bullets">
+              <li>Equipe: listagem, organograma e gest&atilde;o de pessoas</li>
+              <li>Comunica&ccedil;&atilde;o: recados, eventos, comit&ecirc;s e clima</li>
+              <li>Cultura &amp; Carreira: onboarding, miss&atilde;o, regimento</li>
+            </ul>
+          </div>
+          <div class="mockup tilt-card">
+            <div class="org">
+              <span class="org-box">S&oacute;cio</span>
+              <span class="org-line"></span>
+              <div class="org-row"><span class="org-box">Gerente</span><span class="org-box">Gerente</span></div>
+              <span class="org-line"></span>
+              <div class="org-row"><span class="org-box">Analista</span><span class="org-box">Analista</span><span class="org-box">Analista</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6 — OPERACIONAL JURÍDICO -->
+        <div class="tab-panel" role="tabpanel">
+          <div>
+            <span class="panel-num">06</span>
+            <h3 class="panel-h3">N&uacute;cleo jur&iacute;dico completo. Na mesma tela.</h3>
+            <p class="panel-p">Audi&ecirc;ncias, alvar&aacute;s, calend&aacute;rio judicial, POPs e calculadora jur&iacute;dica. O core business sem gargalos, sem planilhas.</p>
+            <ul class="panel-bullets">
+              <li>Processos: audi&ecirc;ncias, alvar&aacute;s e deslocamentos</li>
+              <li>Modelos de peti&ccedil;&atilde;o, POPs e calculadora jur&iacute;dica</li>
+              <li>Diret&oacute;rios: tribunais, f&oacute;runs, c&acirc;maras e ferramentas</li>
             </ul>
           </div>
           <div class="mockup tilt-card">
@@ -2690,59 +2838,27 @@ button { font-family: var(--font-ui); cursor: pointer; }
           </div>
         </div>
 
-        <!-- TAB 4 -->
+        <!-- TAB 7 — FINANCEIRO -->
         <div class="tab-panel" role="tabpanel">
           <div>
-            <span class="panel-num">04</span>
-            <h3 class="panel-h3">Contratos, comiss&otilde;es e equipe. Tudo junto.</h3>
-            <p class="panel-p">Financeiro completo sincronizado com RH. Onboarding, organograma, f&eacute;rias e comiss&otilde;es. Uma vis&atilde;o. Zero silos.</p>
+            <span class="panel-num">07</span>
+            <h3 class="panel-h3">O caixa do escrit&oacute;rio sob controle total.</h3>
+            <p class="panel-p">Dashboard financeiro, contratos e comiss&otilde;es conectados &agrave; opera&ccedil;&atilde;o. Do c&aacute;lculo rescis&oacute;rio &agrave;s f&eacute;rias.</p>
             <ul class="panel-bullets">
-              <li>Contratos, comiss&otilde;es e rescis&otilde;es automatizadas</li>
-              <li>Onboarding, organograma e gest&atilde;o de carreira</li>
-              <li>Presta&ccedil;&atilde;o de contas e reembolso simplificados</li>
+              <li>Dashboard Financeiro, Contratos e Comiss&otilde;es</li>
+              <li>C&aacute;lculo Rescis&oacute;rio e Presta&ccedil;&atilde;o de Contas</li>
+              <li>Reembolso e F&eacute;rias automatizados</li>
             </ul>
           </div>
           <div class="mockup tilt-card">
-            <div class="split">
-              <div>
-                <div class="bars">
-                  <i style="height:40%"></i><i style="height:60%"></i><i style="height:50%"></i><i style="height:80%"></i><i style="height:100%"></i>
-                </div>
-                <div class="bars-labels"><span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span></div>
-              </div>
-              <div class="org">
-                <span class="org-box">S&oacute;cio</span>
-                <span class="org-line"></span>
-                <div class="org-row"><span class="org-box">Gerente</span><span class="org-box">Gerente</span></div>
-                <span class="org-line"></span>
-                <div class="org-row"><span class="org-box">Analista</span><span class="org-box">Analista</span></div>
-              </div>
-            </div>
+            <span class="dl-badge">Vis&atilde;o de junho</span>
+            <div class="dl-row"><span class="dl-date">Receita</span><span class="dl-name">Honor&aacute;rios aprovados</span><span class="dl-due">R$233.789</span></div>
+            <div class="dl-row"><span class="dl-date">Contratos</span><span class="dl-name">12 ativos &middot; 2 a renovar</span><span class="dl-due due-soon">Renova&ccedil;&atilde;o</span></div>
+            <div class="dl-row"><span class="dl-date">Comiss&otilde;es</span><span class="dl-name">Equipe comercial</span><span class="dl-due">R$18.420</span></div>
+            <div class="dl-row"><span class="dl-date">Reembolso</span><span class="dl-name">4 solicita&ccedil;&otilde;es pendentes</span><span class="dl-due due-today">Aprovar</span></div>
           </div>
         </div>
 
-        <!-- TAB 5 -->
-        <div class="tab-panel" role="tabpanel">
-          <div>
-            <span class="panel-num">05</span>
-            <h3 class="panel-h3">Tecnologia que sua equipe realmente usa.</h3>
-            <p class="panel-p">Trilhas, cursos e playbooks para que cada colaborador extraia o m&aacute;ximo da plataforma e construa uma cultura de alta performance.</p>
-            <ul class="panel-bullets">
-              <li>Trilhas de capacita&ccedil;&atilde;o por perfil e fun&ccedil;&atilde;o</li>
-              <li>Playbooks pr&aacute;ticos de opera&ccedil;&atilde;o</li>
-              <li>Cursos com certifica&ccedil;&atilde;o em parceria institucional</li>
-            </ul>
-          </div>
-          <div class="mockup tilt-card">
-            <div class="lp">
-              <div class="lp-node"><span class="lp-c done">&#10003;</span><span class="lp-label">Onboarding</span><span class="lp-pct">100%</span></div>
-              <div class="lp-node"><span class="lp-c done">&#10003;</span><span class="lp-label">CRM</span><span class="lp-pct">100%</span></div>
-              <div class="lp-node"><span class="lp-c done">&#10003;</span><span class="lp-label">Jur&iacute;dico</span><span class="lp-pct">100%</span></div>
-              <div class="lp-node"><span class="lp-c prog"></span><span class="lp-label">Financeiro</span><span class="lp-pct">40%</span></div>
-              <div class="lp-node"><span class="lp-c"></span><span class="lp-label">Avan&ccedil;ado</span><span class="lp-pct">0%</span></div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -3104,7 +3220,7 @@ button { font-family: var(--font-ui); cursor: pointer; }
         <span class="cmp-cell cmp-cell-o"><svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#3D4460"/><path d="M6.8 6.8L13.2 13.2M13.2 6.8L6.8 13.2" stroke="#F0EDE8" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       </div>
       <div class="cmp-row reveal reveal-up" style="transition-delay:90ms">
-        <span class="cmp-feature">Academy incluso na plataforma</span>
+        <span class="cmp-feature">An&aacute;lise &amp; relat&oacute;rios nativos</span>
         <span class="cmp-cell"><svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#B8A97A"/><path d="M6 10.2L9 13L14.5 7" stroke="#0E1120" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span class="cmp-cell cmp-cell-o"><svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#3D4460"/><path d="M6.8 6.8L13.2 13.2M13.2 6.8L6.8 13.2" stroke="#F0EDE8" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       </div>
@@ -3137,12 +3253,12 @@ button { font-family: var(--font-ui); cursor: pointer; }
   <section id="academy-teaser">
     <div class="teaser-grid">
       <div>
-        <p class="sec-eyebrow eyebrow-left reveal reveal-up">MAIS DO QUE SOFTWARE</p>
+        <p class="sec-eyebrow eyebrow-left reveal reveal-up">VERTENTE EDUCACIONAL &middot; ITEM OPCIONAL</p>
         <h2 class="teaser-h2 reveal reveal-up">Tecnologia s&oacute; funciona<br>com pessoas preparadas.</h2>
-        <p class="teaser-body reveal reveal-up">O Kompass Academy oferece MBAs, trilhas e playbooks para que sua equipe domine a opera&ccedil;&atilde;o e construa uma cultura de alta performance.</p>
+        <p class="teaser-body reveal reveal-up">A Kompass Academy &eacute; a vertente educacional do ecossistema &mdash; MBA e cursos para l&iacute;deres jur&iacute;dicos. N&atilde;o integra o pacote do software: &eacute; adquirida separadamente.</p>
         <div class="teaser-pills reveal reveal-up">
           <span>MBA em Gest&atilde;o Jur&iacute;dica</span>
-          <span>Trilha de LegalTech</span>
+          <span>Cursos &middot; Em breve</span>
         </div>
         <a class="btn-ghost-gold nav-link-academy reveal reveal-up" href="#academy-landing">Conhecer o Kompass Academy &rarr;</a>
       </div>
@@ -3226,7 +3342,6 @@ button { font-family: var(--font-ui); cursor: pointer; }
       <div>
         <div class="logo">
           <img src="assets/brand/mark-crop.png" width="42" height="22" alt="" style="display:block">
-
           <span class="logo-text">
             <span class="logo-kompass">kompass</span><span class="logo-hub">Hub</span>
           </span>
@@ -3356,43 +3471,44 @@ button { font-family: var(--font-ui); cursor: pointer; }
     });
   }
 
-  function showMain(path) {
+  /* ----------------------------------------------------------
+     AMBIENTES — Tech × Academy (totalmente separados)
+     ---------------------------------------------------------- */
+  function setPath(path) {
+    sessionStorage.setItem('kompass_path', path);
+    document.body.setAttribute('data-path', path);
     mainContent.style.display = 'block';
-    if (path === 'academy') {
-      academyLanding.style.display = 'block';
-    }
-    startHeroSequence();
+    window.scrollTo(0, 0);
+    if (path === 'tech') startHeroSequence();
   }
 
   /* ----------------------------------------------------------
-     GATEWAY — sessionStorage routing
+     GATEWAY — escolha obrigatória (sem rolagem livre)
      ---------------------------------------------------------- */
   var storedPath = sessionStorage.getItem('kompass_path');
   if (storedPath) {
     gateway.style.display = 'none';
-    showMain(storedPath);
+    setPath(storedPath);
+  } else {
+    document.body.style.overflow = 'hidden';
   }
 
   function dismissGateway(direction) {
-    gateway.style.transition = 'transform 700ms ease-in-out, opacity 400ms';
-    gateway.style.transform = 'translateY(' + direction + '100vh)';
+    gateway.style.transition = 'transform 800ms ease-in-out, opacity 500ms';
+    gateway.style.transform = 'translateX(' + direction + '100vw)';
     gateway.style.opacity = '0';
-    setTimeout(function () { gateway.style.display = 'none'; }, 700);
+    document.body.style.overflow = '';
+    setTimeout(function () { gateway.style.display = 'none'; }, 800);
   }
 
   document.getElementById('card-tech').addEventListener('click', function () {
-    sessionStorage.setItem('kompass_path', 'tech');
-    dismissGateway('-');
-    showMain('tech');
+    dismissGateway('');
+    setPath('tech');
   });
 
   document.getElementById('card-academy').addEventListener('click', function () {
-    sessionStorage.setItem('kompass_path', 'academy');
-    dismissGateway('');
-    showMain('academy');
-    setTimeout(function () {
-      academyLanding.scrollIntoView();
-    }, 700);
+    dismissGateway('-');
+    setPath('academy');
   });
 
   // Keyboard access for gateway cards
@@ -3406,15 +3522,13 @@ button { font-family: var(--font-ui); cursor: pointer; }
     });
   });
 
-  // Scroll to skip gateway (wheel or touch)
-  function skipGateway() {
-    if (sessionStorage.getItem('kompass_path')) return;
-    sessionStorage.setItem('kompass_path', 'tech');
-    gateway.style.display = 'none';
-    showMain('tech');
-  }
-  window.addEventListener('wheel', skipGateway, { once: true, passive: true });
-  window.addEventListener('touchmove', skipGateway, { once: true, passive: true });
+  /* Links que trocam de ambiente */
+  document.querySelectorAll('.to-tech').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      setPath('tech');
+    });
+  });
 
   /* ----------------------------------------------------------
      NAV — scrolled state
@@ -3472,13 +3586,20 @@ button { font-family: var(--font-ui); cursor: pointer; }
   });
 
   /* ----------------------------------------------------------
-     ACADEMY NAV LINKS — reveal section before scrolling
+     ACADEMY NAV LINKS — trocam para o ambiente Academy
      ---------------------------------------------------------- */
   document.querySelectorAll('.nav-link-academy').forEach(function (link) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
-      academyLanding.style.display = 'block';
-      academyLanding.scrollIntoView({ behavior: 'smooth' });
+      setPath('academy');
+    });
+  });
+
+  /* No ambiente Academy, âncoras do Tech trocam de ambiente antes de rolar */
+  document.querySelectorAll('.nav-link[href^="#"], .mobile-link[href^="#"], .footer-links a[href^="#"]').forEach(function (link) {
+    if (link.classList.contains('nav-link-academy')) return;
+    link.addEventListener('click', function () {
+      if (document.body.getAttribute('data-path') === 'academy') setPath('tech');
     });
   });
 
